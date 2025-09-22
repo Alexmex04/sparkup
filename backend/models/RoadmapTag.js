@@ -6,16 +6,18 @@ class RoadmapTag extends Model {}
 RoadmapTag.init(
   {
     roadmapId: {
-      type: DataTypes.INTEGER.UNSIGNED,       // <- UNSIGNED para empatar Roadmap.id
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      primaryKey: true,                        // <-- PK compuesta (1/2)
       field: "roadmapId",
       references: { model: "roadmaps", key: "id" },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
     tagId: {
-      type: DataTypes.INTEGER.UNSIGNED,       // <- UNSIGNED para empatar Tag.id
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      primaryKey: true,                        // <-- PK compuesta (2/2)
       field: "tagId",
       references: { model: "tags", key: "id" },
       onUpdate: "CASCADE",
@@ -29,7 +31,8 @@ RoadmapTag.init(
     timestamps: false,
     underscored: false,
     indexes: [
-      { unique: true, fields: ["roadmapId", "tagId"] },
+      // Opcional: ya no es estrictamente necesario el unique, porque la PK compuesta lo garantiza
+      // { unique: true, fields: ["roadmapId", "tagId"] },
       { fields: ["tagId"] },
     ],
   }

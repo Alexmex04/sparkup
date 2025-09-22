@@ -6,16 +6,18 @@ class UserLikedTag extends Model {}
 UserLikedTag.init(
   {
     userId: {
-      type: DataTypes.INTEGER,                 // User.id es INTEGER (normal)
+      type: DataTypes.INTEGER,                 // User.id = INTEGER normal
       allowNull: false,
+      primaryKey: true,                        // <-- PK compuesta (1/2)
       field: "userId",
       references: { model: "user", key: "id" },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
     tagId: {
-      type: DataTypes.INTEGER.UNSIGNED,        // <- UNSIGNED para empatar Tag.id
+      type: DataTypes.INTEGER.UNSIGNED,        // Tag.id = UNSIGNED
       allowNull: false,
+      primaryKey: true,                        // <-- PK compuesta (2/2)
       field: "tagId",
       references: { model: "tags", key: "id" },
       onUpdate: "CASCADE",
@@ -29,7 +31,7 @@ UserLikedTag.init(
     timestamps: true,
     underscored: false,
     indexes: [
-      { unique: true, fields: ["userId", "tagId"] },
+      // { unique: true, fields: ["userId", "tagId"] }, // redundante con PK compuesta
       { fields: ["tagId"] },
     ],
   }
