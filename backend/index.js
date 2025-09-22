@@ -81,20 +81,36 @@ export let io;
     if (process.env.NODE_ENV !== "production") {
       await sequelize.sync({ alter: true });
       console.log("[DB] sync(alter) aplicado (dev).");
-    } else {
-      // En producción, asume que el esquema ya está preparado (migraciones).
-      console.log("[DB] Producción: no se ejecuta sync/alter.");
+    } else if(runSyncFlag){
+      console.log("[DB] Producción: RUN_SYNC_ON_START=true → ejecutando sync(alter) una vez...");
+      await sequelize.sync({ alter: true });
+      console.log("[DB] Producción: sync(alter) OK. (Recuerda poner RUN_SYNC_ON_START=false y redeploy)");      
+    }else{
+      console.log("[DB] Producción: no se ejecuta sync/alter (RUN_SYNC_ON_START no está activo).");
     }
 
+    const runSeedFlag = process.env.RUN_SEED_ON_START === "true";
+
     // 5) Seeds controlados (solo si está vacío)
+// 5) Seeds controlados (solo si está vacío, o forzado por flag)
+  if (runSeedFlag) {
+    console.log("[Seed] RUN_SEED_ON_START=true → forzando seed...");
+    await seedTagsAndRoadmaps();
+    await seedRoadmapTagLinks();
+    await createAdminUser();
+    console.log("[Seed] Datos base creados (forzado).");
+  } else {
     if ((await Tag.count()) === 0) {
       await seedTagsAndRoadmaps();
       await seedRoadmapTagLinks();
       await createAdminUser();
-      console.log("[Seed] Datos base creados.");
+      console.log("[Seed] Datos base creados (porque Tag estaba vacío).");
     } else {
       await createAdminUser();
+      console.log("[Seed] Admin verificado/creado.");
     }
+  }
+
 
     // 6) HTTP + Socket.IO
     const server = http.createServer(app);
