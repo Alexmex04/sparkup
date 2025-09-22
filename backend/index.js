@@ -126,7 +126,11 @@ export let io;
     // 6) HTTP + Socket.IO
     const server = http.createServer(app);
     io = new SocketIOServer(server, {
-      cors: { origin: allowed.length ? allowed : "*" }
+      cors: { 
+        origin: allowed.length ? allowed : "*" ,
+        methods: ["GET", "POST"],
+        credentials: true,
+      }
     });
 
     io.on("connection", (socket) => {
