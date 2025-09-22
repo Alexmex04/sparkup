@@ -64,9 +64,20 @@ export let io;
 // ========== Arranque ordenado ==========
 (async () => {
   try {
+
+    const runSyncFlag = process.env.RUN_SYNC_ON_START === "true";
     // 1) Crear/verificar DB solo en desarrollo (local)
     if (process.env.NODE_ENV !== "production") {
-      await initDatabase(); // NO en prod (Aiven/administrados no permiten CREATE DATABASE)
+      await sequelize.sync({ alter: true });
+      console.log("[DB] sync(alter) aplicado (dev).");
+
+    }else if (runSyncFlag){
+      console.log("[DB] Producción: RUN_SYNC_ON_START=true → ejecutando sync(alter) una vez...");
+      await sequelize.sync({ alter: true });
+      console.log("[DB] Producción: sync(alter) OK. (Recuerda poner RUN_SYNC_ON_START=false y redeploy)");
+
+    }else{
+      console.log("[DB] Producción: no se ejecuta sync/alter (RUN_SYNC_ON_START no está activo).");
     }
 
     // 2) Conectar a la DB
