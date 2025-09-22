@@ -1,4 +1,3 @@
-// frontend/src/pages/headerPages/home.jsx
 import React, { useState, useContext, useMemo, useEffect, useRef } from "react";
 import "./home.mod.css";
 
@@ -6,9 +5,11 @@ import TagsContainer from "../../components/TagsContainer";
 import VideosContainer from "../../components/VideosContainer";
 import { AuthContext } from "../../components/AuthContext.jsx";
 
-import { getLikes, setLikes, toggleTagLike } from "../../utils/userPrefs";
+import { getLikes } from "../../utils/userPrefs";
 import { getTags, getRoadmaps } from "../../services/catalog";
-import { likeTag, unlikeTag, getMyLikedTagIds } from "../../services/likes";
+
+// 🔌 Hook de tiempo real (WS) para likes (tags y roadmaps)
+import useLiveLikes from "../../hooks/useLiveLikes";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -17,14 +18,23 @@ function Home() {
   // ====== TAGS ======
   const [tagsList, setTagsList] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
-  const [likedTags, setLikedTags] = useState(() =>
-    isLogged ? (getLikes(user).tags || {}) : {}
-  );
+
+  // Invitados: record por nombre para UI local (no persistente)
+  const [guestLikedTags, setGuestLikedTags] = useState({});
 
   // Mapas auxiliares para resolver id/slug/name <-> name
   const nameToIdRef = useRef(new Map());
   const idToNameRef = useRef(new Map());
   const slugToIdRef = useRef(new Map());
+
+  // Likes en vivo (WS): Set<number> para tags y roadmaps + helpers REST
+  const {
+    likedTags: likedTagIds,               // Set<number>
+    likedRoadmaps,                        // Set<number>
+    likeTag, unlikeTag,                   // (refrescan solos tras REST)
+    likeRoadmap, unlikeRoadmap,           // (por si los usas aquí después)
+    loading: likesLoading
+  } = useLiveLikes();
 
   useEffect(() => {
     (async () => {
@@ -57,28 +67,6 @@ function Home() {
     })();
   }, []);
 
-  // Sincroniza likes de tags desde backend al entrar logueado (no cambia tu guardado)
-  useEffect(() => {
-    (async () => {
-      if (!isLogged) return;
-      try {
-        const ids = await getMyLikedTagIds(); // Set<number>
-        if (ids.size === 0) return;
-
-        const likes = getLikes(user);
-        const next = { ...(likes.tags || {}) };
-        ids.forEach((id) => {
-          const name = idToNameRef.current.get(Number(id));
-          if (name) next[name] = true;
-        });
-        setLikes(user, { ...likes, tags: next });
-        setLikedTags({ ...next });
-      } catch (e) {
-        console.warn("No se pudieron sincronizar tags liked:", e);
-      }
-    })();
-  }, [isLogged, user]);
-
   const handleTagSelect = (tagObj) => {
     const name =
       tagObj && typeof tagObj === "object"
@@ -87,56 +75,64 @@ function Home() {
     setSelectedTag(name);
   };
 
-  const handleLikeToggle = async (tagObj) => {
-    const ref =
-      (tagObj &&
-        typeof tagObj === "object" &&
-        (tagObj.id ?? tagObj.slug ?? tagObj.name)) ||
-      tagObj;
-
-    const name =
-      (tagObj &&
-        typeof tagObj === "object" &&
-        (tagObj.name ??
-          idToNameRef.current.get(Number(tagObj.id)) ??
-          tagObj.slug)) ||
-      String(ref);
-
-    if (isLogged) {
-      const likes = toggleTagLike(user, name); // UI inmediata + localStorage
-      setLikedTags({ ...(likes.tags || {}) });
-      try {
-        if (likedTags[name]) {
-          await unlikeTag(ref);
-        } else {
-          await likeTag(ref);
-        }
-      } catch (e) {
-        console.error("Backend like tag error (UI intacta):", e);
+  // Record por nombre que espera <TagsContainer />, calculado desde Set de IDs (hook)
+  const likedTagsByName = useMemo(() => {
+    const rec = {};
+    for (const t of tagsList) {
+      const liked = likedTagIds?.has(Number(t.id)) || false;
+      rec[t.name] = liked;
+    }
+    // Para invitados, mezcla su estado local (solo lectura visual)
+    if (!isLogged) {
+      for (const [name, val] of Object.entries(guestLikedTags)) {
+        rec[name] = !!val;
       }
-    } else {
+    }
+    return rec;
+  }, [tagsList, likedTagIds, isLogged, guestLikedTags]);
+
+  const handleLikeToggle = async (tagObj) => {
+    const tagId = Number(tagObj?.id ?? nameToIdRef.current.get(tagObj?.name) ?? 0);
+    const tagName = tagObj?.name ?? idToNameRef.current.get(tagId) ?? String(tagId || "");
+
+    if (!isLogged) {
       // Visitante: solo memoria (no persistimos)
-      setLikedTags((prev) => ({ ...prev, [name]: !prev[name] }));
+      setGuestLikedTags((prev) => ({ ...prev, [tagName]: !prev[tagName] }));
+      return;
+    }
+
+    // Usuario logueado → persistencia real en backend (y el hook recarga)
+    const isLiked = likedTagIds?.has(tagId);
+    try {
+      if (isLiked) await unlikeTag(tagId || tagObj?.slug || tagName);
+      else await likeTag(tagId || tagObj?.slug || tagName);
+    } catch (e) {
+      console.error("Backend like tag error (UI intacta):", e);
     }
   };
 
   // ====== ROADMAPS (para Home del usuario logueado) ======
+  // Fallback a localStorage SOLO si no hay hook (o usuario no logueado)
   const likesAll = useMemo(() => getLikes(user), [user]);
-  const likedRoadmapIds = useMemo(
-    () =>
-      likesAll?.roadmaps
-        ? Object.entries(likesAll.roadmaps)
-            .filter(([, v]) => !!v)
-            .map(([k]) => Number(k))
-        : [],
-    [likesAll]
-  );
+
+  const likedRoadmapIdsArray = useMemo(() => {
+    if (isLogged && likedRoadmaps && likedRoadmaps.size > 0) {
+      return Array.from(likedRoadmaps);
+    }
+    // Fallback: localStorage (por compatibilidad con tu UX previa)
+    const arr = likesAll?.roadmaps
+      ? Object.entries(likesAll.roadmaps)
+          .filter(([, v]) => !!v)
+          .map(([k]) => Number(k))
+      : [];
+    return arr;
+  }, [isLogged, likedRoadmaps, likesAll]);
 
   // Cargar roadmaps reales solo si hay likes
   const [roadmapsById, setRoadmapsById] = useState(new Map());
   useEffect(() => {
     (async () => {
-      if (!isLogged || likedRoadmapIds.length === 0) return;
+      if (!isLogged || likedRoadmapIdsArray.length === 0) return;
       try {
         const rms = await getRoadmaps(); // [{id,title,slug,tags:[{id,name,slug}]}]
         setRoadmapsById(new Map(rms.map((r) => [Number(r.id), r])));
@@ -145,7 +141,7 @@ function Home() {
         setRoadmapsById(new Map());
       }
     })();
-  }, [isLogged, likedRoadmapIds.length]);
+  }, [isLogged, likedRoadmapIdsArray.length]);
 
   // Tag seleccionado por cada roadmap (para ver videos)
   const [selectedByRoadmap, setSelectedByRoadmap] = useState({});
@@ -157,8 +153,12 @@ function Home() {
     setSelectedByRoadmap((prev) => ({ ...prev, [rid]: tagName }));
   };
 
-  // Mostrar todos los tags si no hay sesión o si el usuario logueado aún no tiene likes
-  const showOnlyLiked = isLogged && Object.keys(likedTags || {}).length > 0;
+  // Mostrar solo liked si hay señal suficiente
+  const likedCount = useMemo(
+    () => Object.values(likedTagsByName).filter(Boolean).length,
+    [likedTagsByName]
+  );
+  const showOnlyLiked = isLogged && likedCount > 0;
 
   return (
     <div className="home">
@@ -187,9 +187,8 @@ Haz click en los TAGS que tenemos para ti y adéntrate a los videos que mejor te
         <TagsContainer
           tags={tagsList}
           onTagSelect={handleTagSelect}
-          likedTags={likedTags}
+          likedTags={likedTagsByName}
           onLikeToggle={handleLikeToggle}
-          // antes: showOnlyLiked={isLogged}
           showOnlyLiked={showOnlyLiked}
         />
         <VideosContainer selectedTag={selectedTag} />
@@ -200,12 +199,12 @@ Haz click en los TAGS que tenemos para ti y adéntrate a los videos que mejor te
         <section className="roadmaps-section">
           <h2>ROADMAPS</h2>
 
-          {likedRoadmapIds.length === 0 ? (
+          {likedRoadmapIdsArray.length === 0 ? (
             <p className="muted">
               Dale “me gusta” a uno en la sección Roadmaps para verlo aquí.
             </p>
           ) : (
-            likedRoadmapIds.map((rid) => {
+            likedRoadmapIdsArray.map((rid) => {
               const roadmap = roadmapsById.get(Number(rid));
               if (!roadmap) return null; // aún cargando
 

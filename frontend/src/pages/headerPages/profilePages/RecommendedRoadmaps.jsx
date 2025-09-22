@@ -1,11 +1,10 @@
-// src/pages/headerPages/profilePages/RecommendedRoadmaps.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./recommended-roadmaps.css";
 import { AuthContext } from "../../../components/AuthContext.jsx";
 import { getLikes } from "../../../utils/userPrefs";
 import { getRoadmaps } from "../../../services/catalog";
-import { getMyLikedTagIds, getMyLikedRoadmapIds } from "../../../services/likes";
+import useLiveLikes from "../../../hooks/useLiveLikes";
 
 const LIMIT_DEFAULT = 6;
 
@@ -16,6 +15,9 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
   const [loading, setLoading] = useState(true);
   const [reco, setReco] = useState([]); // [{id,title,slug,tags:[...], score, percent}]
 
+  // NUEVO: hook de likes en vivo (ids reales)
+  const { likedTags, likedRoadmaps, loading: likesLoading } = useLiveLikes();
+
   useEffect(() => {
     (async () => {
       if (!isLogged) {
@@ -25,8 +27,8 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
       }
 
       try {
-        // ---- 1) Tags con like (preferimos IDs)
-        let likedTagIds = await getMyLikedTagIds(); // Set<number>
+        // ---- 1) Tags con like (preferimos IDs del hook)
+        let likedTagIds = likedTags; // Set<number> del hook
         let likedTagNames = undefined;
 
         // Fallback: si no hay IDs (o set vacío), usamos nombres del localStorage
@@ -40,18 +42,8 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
           );
         }
 
-        // ---- 2) Roadmaps con like (para excluir)
-        let likedRoadmapIds = new Set();
-        try {
-          likedRoadmapIds = await getMyLikedRoadmapIds(); // Set<number>
-        } catch {
-          const localRms = getLikes(user)?.roadmaps || {};
-          likedRoadmapIds = new Set(
-            Object.entries(localRms)
-              .filter(([, v]) => !!v)
-              .map(([k]) => Number(k))
-          );
-        }
+        // ---- 2) Roadmaps con like (para excluir): Set<number> del hook
+        const likedRoadmapIds = likedRoadmaps || new Set();
 
         // ---- 3) Catálogo con tags
         const all = await getRoadmaps(); // [{id,title,slug,tags:[{id,name,slug}]}]
@@ -84,7 +76,7 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
           .filter(
             (r) => r.percent > 0 && !likedRoadmapIds.has(Number(r.id))
           )
-          // Ordenamos por mayor porcentaje y después por más overlap
+          // Orden: mayor porcentaje y luego mayor overlap
           .sort((a, b) => (b.percent - a.percent) || (b.score - a.score))
           .slice(0, limit);
 
@@ -96,7 +88,7 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
         setLoading(false);
       }
     })();
-  }, [isLogged, user, limit]);
+  }, [isLogged, user, limit, likedTags, likedRoadmaps]);
 
   if (!isLogged) {
     return (
@@ -109,7 +101,7 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
     );
   }
 
-  if (loading) {
+  if (loading || likesLoading) {
     return (
       <section className="recommended-roadmaps">
         <h2>Recommended Roadmaps</h2>
@@ -154,8 +146,6 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
             <div className="reco-actions">
               <Link to="/roadmaps" className="nav-link">Ver todos los roadmaps</Link>
             </div>
-
-            {/* Ya no mostramos VideosContainer ni un espacio para videos */}
           </div>
         ))}
       </div>

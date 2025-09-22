@@ -1,10 +1,9 @@
-// src/pages/headerPages/roadmaps.jsx
 import React, { useEffect, useState, useContext } from "react";
 import "./roadmaps.css";
 import { AuthContext } from "../../components/AuthContext.jsx";
 import { getLikes, setLikes, toggleRoadmapLike } from "../../utils/userPrefs";
 import { getRoadmaps } from "../../services/catalog";
-import { getMyLikedRoadmapIds, likeRoadmap, unlikeRoadmap } from "../../services/likes";
+import useLiveLikes from "../../hooks/useLiveLikes";
 
 // Export vacío por compatibilidad con Home (si aún lo importara)
 export const ROADMAPS = [];
@@ -15,10 +14,16 @@ export default function Roadmaps() {
 
   const [roadmaps, setRoadmaps] = useState([]);
   const [expanded, setExpanded] = useState({});
-  const [likedSet, setLikedSet] = useState(() => {
-    const ls = getLikes(user)?.roadmaps || {};
-    return new Set(Object.entries(ls).filter(([, v]) => !!v).map(([k]) => String(k)));
-  });
+
+  // NUEVO: hook de likes en vivo (ids reales del backend)
+  const {
+    likedRoadmaps,                    // Set<number>
+    likeRoadmap, unlikeRoadmap,       // helpers REST + recarga
+    loading: likesLoading
+  } = useLiveLikes();
+
+  // Para invitados (no logueados), mantenemos un set local para UX
+  const [guestLiked, setGuestLiked] = useState(new Set());
 
   // 1) Cargar roadmaps reales desde backend
   useEffect(() => {
@@ -34,30 +39,32 @@ export default function Roadmaps() {
     })();
   }, []);
 
-  // 2) Sincronizar likes desde backend -> localStorage/UI
+  // 2) Sincronizar likes desde backend -> localStorage (solo si hay user)
   useEffect(() => {
     (async () => {
       if (!isLogged) return;
       try {
-        const ids = await getMyLikedRoadmapIds(); // Set<number>
-        if (ids.size === 0) return;
+        if (likedRoadmaps.size === 0) return;
 
         const likes = getLikes(user);
         const next = { ...(likes.roadmaps || {}) };
-        ids.forEach((id) => { next[String(id)] = true; });
+        likedRoadmaps.forEach((id) => { next[String(id)] = true; });
 
         setLikes(user, { ...likes, roadmaps: next });
-        setLikedSet(new Set(Object.entries(next).filter(([, v]) => !!v).map(([k]) => String(k))));
       } catch (e) {
         console.warn("No se pudieron sincronizar roadmaps liked:", e);
       }
     })();
-  }, [isLogged, user]);
+  }, [isLogged, user, likedRoadmaps]);
 
-  const isLiked = (rid) => likedSet.has(String(rid));
+  const isLiked = (rid) => {
+    const idNum = Number(rid);
+    return likedRoadmaps.has(idNum) || guestLiked.has(String(rid));
+  };
+
   const toggleExpand = (rid) => setExpanded((prev) => ({ ...prev, [rid]: !prev[rid] }));
 
-  // 3) Toggle con UI optimista + persistencia real
+  // 3) Toggle con UI optimista; en logueados persiste en servidor
   const toggleLike = async (rid) => {
     const idNum = Number(rid);
     const idStr = String(rid);
@@ -65,7 +72,7 @@ export default function Roadmaps() {
     // Por seguridad: no intentes persistir si el id no es entero positivo
     if (!Number.isInteger(idNum) || idNum <= 0) {
       console.warn("Roadmap con id inválido (no se puede persistir):", rid);
-      setLikedSet((prev) => {
+      setGuestLiked((prev) => {
         const next = new Set(prev);
         if (next.has(idStr)) next.delete(idStr); else next.add(idStr);
         return next;
@@ -74,7 +81,8 @@ export default function Roadmaps() {
     }
 
     if (!isLogged) {
-      setLikedSet((prev) => {
+      // UX local para invitados
+      setGuestLiked((prev) => {
         const next = new Set(prev);
         if (next.has(idStr)) next.delete(idStr); else next.add(idStr);
         return next;
@@ -83,13 +91,10 @@ export default function Roadmaps() {
     }
 
     try {
-      // UI/localStorage optimista
+      // UI/localStorage optimista (opcional)
       const likes = toggleRoadmapLike(user, idStr);
-      const nowLiked = !!likes.roadmaps?.[idStr];
-      setLikedSet(new Set(Object.entries(likes.roadmaps || {}).filter(([, v]) => !!v).map(([k]) => String(k))));
-
-      // Persistencia real en BD
-      if (nowLiked) await likeRoadmap(idNum);
+      // Persistencia real en BD + recarga automática con el hook
+      if (!!likes.roadmaps?.[idStr]) await likeRoadmap(idNum);
       else await unlikeRoadmap(idNum);
     } catch (e) {
       console.error("Backend roadmap-like error (UI intacta):", e);

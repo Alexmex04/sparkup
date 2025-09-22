@@ -1,4 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
+import { socket, joinUserRoom } from "../utils/socket.js";
+
 
 export const AuthContext = createContext();
 
@@ -21,6 +23,21 @@ export function AuthProvider({ children }) {
       localStorage.removeItem("token");
     }
   }, [user, token]);
+
+  useEffect(() => {
+    if (user?.id) joinUserRoom(user.id);
+  }, [user?.id]);
+
+  useEffect(() => {
+  const onLikes = (payload) => {
+    // aquí solo observamos; el refresco real lo haremos con el hook de abajo
+    // console.log("likes:updated", payload);
+  };
+  socket.on("likes:updated", onLikes);
+  return () => socket.off("likes:updated", onLikes);
+}, []);
+
+
 
   const login = (userData, tokenData) => {
     setUser(userData);
