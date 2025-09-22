@@ -1,0 +1,117 @@
+/* Contenedor principal de los tags */
+/* Estilo de la barra de scroll */
+.tags-main-container::-webkit-scrollbar {
+  width: 8px;
+}
+.tags-main-container::-webkit-scrollbar-track {
+  background: #2c2c2c;
+  border-radius: 4px;
+}
+.tags-main-container::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.tag-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Empuja el botón y el like a los extremos */
+  background-color: #252525;
+  border: 1px solid #444;
+  border-radius: 8px; /* Bordes menos redondeados */
+  margin-bottom: 10px; /* Espacio vertical entre tags */
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.tag-item:hover {
+  background-color: #333;
+  border-color: #666;
+}
+
+.tag-button {
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  padding: 12px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left; /* Alinea el texto a la izquierda */
+  flex-grow: 1; /* Hace que el botón ocupe el espacio disponible */
+}
+
+.like-icon {
+  padding-right: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+/* Contenedor principal de los tags */
+.tags-main-container {
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  flex-basis: 250px;
+  flex-shrink: 0;
+  height: 100%;
+  
+  /* --- NUEVO LAYOUT FLEX PARA ACOMODAR LA BÚSQUEDA --- */
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- NUEVOS ESTILOS PARA LA BARRA DE BÚSQUEDA --- */
+.search-tags-wrapper {
+  padding: 10px;
+  border-bottom: 2px solid #333; /* Línea separadora */
+}
+
+.search-tags-bar {
+  width: 100%;
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 20px;
+  color: #e0e0e0;
+  padding: 8px 15px;
+  font-size: 14px;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+.search-tags-bar::placeholder {
+  color: #888;
+}
+/* --- FIN DE NUEVOS ESTILOS --- */
+
+/* Adaptamos la lista para que ocupe el espacio restante y tenga scroll */
+.tags-list {
+  padding: 10px;
+  overflow-y: auto; /* Habilita el scroll VERTICAL */
+  flex-grow: 1; /* Ocupa el espacio restante */
+}
+
+/* Estilo de la barra de scroll (se mueve al nuevo contenedor .tags-list) */
+.tags-list::-webkit-scrollbar {
+  width: 8px;
+}
+.tags-list::-webkit-scrollbar-track {
+  background: #2c2c2c;
+  border-radius: 4px;
+}
+.tags-list::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.tag-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #252525;
+  border: 1px solid #444;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* ... (el resto de los estilos para .tag-item:hover, .tag-button, .like-icon se mantienen igual) ... */

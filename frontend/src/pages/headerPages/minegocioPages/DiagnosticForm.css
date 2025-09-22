@@ -1,0 +1,137 @@
+.main-cont{
+  padding: 15px;
+}
+
+.btn-diagnostic{
+  background: #0f3;
+  color: rgb(0, 58, 19);
+  font-weight: 700;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 18px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.semaforo{
+  align-self: center;
+  justify-content: center;
+  justify-self: center;
+  color: white;
+}
+
+.btn-diagnostic:hover {
+  background: #6eff8b;  
+}
+.form-diagnostic{
+  border: 1px solid #333;
+  background-color: #141414;
+  padding: 25px;
+  border-radius: 15px;
+  width: 800px;
+  justify-self: center;
+
+}
+
+.form-Cont{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid-cont{
+  display: grid;
+  grid-template-columns: 1fr 1fr;  
+  column-gap: 120px;  
+  row-gap: 10px;  
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+
+.form-group label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e0e0e0;      
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #111;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.title-diagnostic{
+  align-self: center;
+  justify-content: center;
+  justify-self: center;
+  color: white;
+}
+
+.cont-results{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;  
+  column-gap: 20px;  
+  row-gap: 10px;  
+  justify-items: center;
+}
+
+.cont-individual-result{
+  border: 2px solid white;;
+  border-radius: 15px;
+  width: 350px;
+  max-width: 400px;
+  background-color: #111;
+  border: 1px solid #333;
+}
+
+.data-diagnostic{
+  padding: 15px;
+  display: grid;
+  grid-template-columns: auto auto;  
+  align-items: center;  
+  column-gap: 25px;
+  
+}
+
+.data-diagnostic p{
+  font-weight: bold;
+}
+
+.semaforo-color {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;   /* círculo */
+  margin: 0 auto;       /* centrado */
+  transition: background 0.3s ease;
+  border: 3px solid white;
+}
+
+.semaforo-verde {
+  background: #28a745;
+}
+
+.semaforo-amarillo {
+  background: #ffc107;
+}
+
+.semaforo-rojo {
+  background: #dc3545;
+}
+
+.analysis-main-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}

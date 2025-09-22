@@ -1,0 +1,133 @@
+/* --- Estilos Base para el contenedor del Home --- */
+.App {
+  padding: 20px;
+  max-width: 95vw;
+  margin: 0 auto;
+}
+
+/* --- Contenedores de texto (idénticos) --- */
+.text-containers-wrapper {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.text-container {
+  flex: 1;
+  background-color: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  height: 150px;
+}
+.text-container textarea {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: bold;
+  resize: none;
+}
+.text-container textarea:focus { outline: none; }
+.text-container textarea:read-only { cursor: default; }
+
+/* --- Layout principal (Tags + Videos) --- */
+.main-content-area {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 75vh;
+}
+
+/* --- CTA inferior --- */
+.call-to-action-section {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 30px;
+}
+.call-to-action-section h2 {
+  font-size: 2.8em;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.text-green  { color: #28a745; }
+.text-yellow { color: #ffc107; }
+.text-red    { color: #dc3545; }
+.call-to-action-section p {
+  font-size: 1.2em;
+  color: #aaa;
+  line-height: 1.6;
+  margin: 5px 0;
+}
+.cta-register-box {
+  border: 2px solid #333;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 30px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-register-box p {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #e0e0e0;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* --- Responsivo --- */
+@media (max-width: 768px) {
+  .text-containers-wrapper { flex-direction: column; }
+  .main-content-area { flex-direction: column; height: auto; }
+}
+
+.home,
+.text-containers-wrapper,
+.main-content-area,
+.call-to-action-section {
+  position: relative;
+  z-index: 0;
+}
+
+/*ROADMAPS ON HOME (LOGGED IN)*/
+
+.roadmaps-section {margin-top:28px;}
+.roadmap-block {background: #111;border:1px solid #1f1f1f;border-radius:12px;padding:12px; margin-bottom:16px;}
+.roadmap-block-title {font-weight:700;margin-bottom:8px;color:#cfe;}
+
+.roadmap-block-grid { display:grid; grid-template-columns: 320px 1fr; gap:16px; align-items:start; }
+.roadmap-tags-only { display:flex; flex-wrap:wrap; gap:8px; }
+.roadmap-tag-btn { background:#1a1a1a; color:#eaeaea; border:1px solid #333; border-radius:12px; padding:6px 10px; cursor:pointer; }
+.roadmap-videos { min-height: 100px; }
+
+.muted { opacity: 0.8; }
+.small { font-size: 0.95rem; }
+
+@media (max-width: 900px) {
+  .roadmap-block-grid { grid-template-columns: 1fr; }
+}
+
+.roadmap-videos {
+  /* Altura fija razonable para que aparezca el scrollbar cuando haya muchos videos */
+  max-height: 420px;       /* ajusta a tu gusto: 360px, 480px, etc. */
+  overflow-y: auto;        /* <-- activa scroll vertical */
+  padding-right: 8px;      
+}
+
+.roadmap-videos::-webkit-scrollbar {
+  width: 8px;
+}
+.roadmap-videos::-webkit-scrollbar-track {
+  background: transparent;
+}
+.roadmap-videos::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+}
+.roadmap-videos:hover::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.4);
+}

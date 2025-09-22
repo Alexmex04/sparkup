@@ -1,0 +1,47 @@
+/* src/pages/headerPages/profilePages/recommended-roadmaps.css */
+.recommended-roadmaps { margin-top: 20px; }
+.recommended-roadmaps h2 { margin-bottom: 12px; }
+
+.reco-list { display: grid; gap: 14px; }
+
+.reco-card {
+  background: #111;
+  border: 1px solid #1f1f1f;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.reco-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.reco-title { margin: 0; }
+.reco-badge {
+  background: #0f3;
+  color: #062;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.95rem;
+}
+
+.reco-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.reco-tag {
+  background: #1a1a1a;
+  color: #eaeaea;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 0.95rem;
+}
+.reco-tag.liked {
+  border-color: #0f3;
+  color: #cfe;
+}
+
+.reco-actions .nav-link {
+  text-decoration: underline;
+}
+.muted { opacity: 0.8; }
