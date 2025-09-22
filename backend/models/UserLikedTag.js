@@ -5,8 +5,22 @@ class UserLikedTag extends Model {}
 
 UserLikedTag.init(
   {
-    userId: { type: DataTypes.INTEGER, allowNull: false, field: "userId",references: { model: "user", key: "id" },onUpdate: "CASCADE",onDelete: "CASCADE", },
-    tagId:  { type: DataTypes.INTEGER, allowNull: false, field: "tagId",references: { model: "tags", key: "id" }, onUpdate: "CASCADE", onDelete: "CASCADE", },
+    userId: {
+      type: DataTypes.INTEGER,                 // User.id es INTEGER (normal)
+      allowNull: false,
+      field: "userId",
+      references: { model: "user", key: "id" },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    },
+    tagId: {
+      type: DataTypes.INTEGER.UNSIGNED,        // <- UNSIGNED para empatar Tag.id
+      allowNull: false,
+      field: "tagId",
+      references: { model: "tags", key: "id" },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    },
   },
   {
     sequelize,

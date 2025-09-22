@@ -5,18 +5,30 @@ class RoadmapTag extends Model {}
 
 RoadmapTag.init(
   {
-    // Mapea los atributos a columnas camelCase existentes
-    roadmapId: { type: DataTypes.INTEGER, allowNull: false, field: "roadmapId",references: { model: "roadmaps", key: "id" },onUpdate: "CASCADE",onDelete: "CASCADE", },
-    tagId:     { type: DataTypes.INTEGER, allowNull: false, field: "tagId", references: { model: "tags", key: "id" }, onUpdate: "CASCADE",onDelete: "CASCADE", },
+    roadmapId: {
+      type: DataTypes.INTEGER.UNSIGNED,       // <- UNSIGNED para empatar Roadmap.id
+      allowNull: false,
+      field: "roadmapId",
+      references: { model: "roadmaps", key: "id" },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    },
+    tagId: {
+      type: DataTypes.INTEGER.UNSIGNED,       // <- UNSIGNED para empatar Tag.id
+      allowNull: false,
+      field: "tagId",
+      references: { model: "tags", key: "id" },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    },
   },
   {
     sequelize,
     modelName: "RoadmapTag",
     tableName: "roadmap_tags",
     timestamps: false,
-    underscored: false, // 
+    underscored: false,
     indexes: [
-      // Usa los nombres EXACTOS de columna que existen en la tabla
       { unique: true, fields: ["roadmapId", "tagId"] },
       { fields: ["tagId"] },
     ],
