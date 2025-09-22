@@ -1,29 +1,35 @@
-import {Sequelize} from "sequelize";
-import dotenv from 'dotenv';
+// backend/config/database.js
+import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 dotenv.config();
-import { initDatabase } from './initDatabase.js'; // Importa el inicializador
 
-// Verifica o crea la base de datos antes de usar Sequelize
-await initDatabase(); // Esto es importante que se haga antes
+const {
+  DB_DIALECT = "mysql",
+  DB_HOST,
+  DB_PORT = 3306,
+  DB_NAME,
+  DB_USER,
+  DB_PASS,
+  DB_SSL = "true",
+  DB_CA_PEM, // certificado CA completo (BEGIN/END) pegado en env de Render
+} = process.env;
 
-//Se importa sequelize para inicializar la conexion con la base de datos
-const db = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT || 3306,
-        dialect: process.env.DB_DIALECT || "mysql",
-        logging: false,
+// ---- SSL para Aiven ----
+const useSSL = DB_SSL === "true";
+let dialectOptions = {};
+if (useSSL) {
+  dialectOptions.ssl = DB_CA_PEM
+    ? { ca: DB_CA_PEM, rejectUnauthorized: true, minVersion: "TLSv1.2" }
+    : { rejectUnauthorized: true, minVersion: "TLSv1.2" };
+}
 
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
+  host: DB_HOST,
+  port: Number(DB_PORT),
+  dialect: DB_DIALECT,
+  logging: false, // cámbialo a console.log si necesitas ver SQL
+  dialectOptions,
+  pool: { max: 10, min: 0, acquire: 30000, idle: 10000 },
 });
-/**conexion de la base de datos
- * modular en este caso es el nombre d ela base de datos
- * root usuario para la conexion
- * 'root' es la contraseña del usuario.
- * host corre en local
- * dialect especifica que s eutilizara mysql
- * y expor esporta la conexion
- */
-export default db;
+
+export default sequelize;
