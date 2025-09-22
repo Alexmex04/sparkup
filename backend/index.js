@@ -28,12 +28,7 @@ import MLDataRoute from "./routes/MLDataRoute.js";
 
 const app = express();
 
-// ========== CORS basado en ENV ==========
-/**
- * Configura CORS mediante CORS_ORIGIN (coma-separado):
- *   CORS_ORIGIN=https://tu-frontend.onrender.com,https://otro.com
- * Si no hay origin (p.ej. curl/healthchecks), se permite.
- */
+
 const allowed = (process.env.CORS_ORIGIN ?? "")
   .split(",")
   .map(s => s.trim())
