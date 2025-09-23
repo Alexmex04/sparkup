@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "./style/login.css"; 
+import "./style/login.css";
 import { AuthContext } from "../../../components/AuthContext.jsx";
+import { api } from "../../../utils/api"; // usa el cliente centralizado
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,28 +12,24 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
-
-
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrors(null);
     setMensaje(null);
 
-
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-                email,
-                password,
-            });
+      // sin host; respeta VITE_API_URL (o fallback seguro) desde utils/api.js
+      const res = await api.post("/auth/login", { email, password });
 
-            login(res.data.user, res.data.token); 
-            setMensaje("Login exitoso, redirigiendo a pagina principal");
-            setTimeout(() => {
-            navigate("/home");
-        }, 2000);
+      // tu flujo actual
+      login(res.data.user, res.data.token);
+      setMensaje("Login exitoso, redirigiendo a pagina principal");
+      setTimeout(() => navigate("/home"), 2000);
     } catch (err) {
-      const msg = err?.response?.data?.message || "Error al iniciar sesión. Intenta de nuevo.";
+      const msg =
+        err?.response?.data?.message ||
+        err?.response?.data?.msg ||
+        "Error al iniciar sesión. Intenta de nuevo.";
       setErrors(msg);
     }
   };
@@ -78,7 +74,7 @@ const Login = () => {
             Iniciar sesión
           </button>
         </form>
- 
+
         <div className="login-footer">
           <span>¿No tienes cuenta?</span>
           <button type="button" className="btn-link" onClick={() => navigate("/register")}>
@@ -88,7 +84,6 @@ const Login = () => {
           <button type="button" className="btn-link" onClick={() => navigate("/forgot-password")}>
             Restaurar
           </button>
-          {/* <Link to="/register" className="btn-link">Regístrate</Link> */}
         </div>
       </div>
     </div>
