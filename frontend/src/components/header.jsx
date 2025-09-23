@@ -24,7 +24,7 @@ function Header() {
       <nav className="nav-right">
         <NavLink to="/roadmaps" className="nav-link">Roadmaps</NavLink>
         <NavLink to="/minegocio" className="nav-link">Mi negocio</NavLink>
-        {isAdmin && <Link to="/options">Opciones</Link>}
+        {isAdmin && <Link to="/options" className="nav-link">Opciones</Link>}
         {user ? (
           <NavLink to="/profile" className="login-button">Perfil</NavLink>
         ) : (

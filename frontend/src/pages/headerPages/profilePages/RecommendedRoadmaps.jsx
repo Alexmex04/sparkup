@@ -104,7 +104,7 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
   if (loading || likesLoading) {
     return (
       <section className="recommended-roadmaps">
-        <h2>Recommended Roadmaps</h2>
+        <h2>Roadmaps</h2>
         <p className="muted small">Cargando recomendaciones…</p>
       </section>
     );
@@ -113,7 +113,7 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
   if (!reco.length) {
     return (
       <section className="recommended-roadmaps">
-        <h2>Recommended Roadmaps</h2>
+        <h2>Roadmaps</h2>
         <p className="muted small">
           Aún no tengo suficientes señales de tus gustos. Dale like a algunos tags o roadmaps para afinar recomendaciones.
         </p>
@@ -123,7 +123,7 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
 
   return (
     <section className="recommended-roadmaps">
-      <h2>Recommended Roadmaps</h2>
+      <h2>Roadmaps</h2>
 
       <div className="reco-list">
         {reco.map((roadmap) => (

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../../components/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
+import "./profile.css";
 
 function ProfileInfo(){
      const { user, logout } = useContext(AuthContext);
@@ -16,11 +17,11 @@ function ProfileInfo(){
                   <h1>Información del perfil</h1>
                   {user ? (
                       <div>
-                          <p><strong>ID:</strong> {user.id}</p>
+                          
                           <p><strong>Nombre:</strong> {user.firstName} {user.lastName}</p>
                           <p><strong>Email:</strong> {user.email}</p>
                         
-                           <button onClick={handleLogout}>Cerrar sesión</button>
+                           <button onClick={handleLogout} className="boton-perfil">Cerrar sesión</button>
                       </div>
                       
                   ) : (
