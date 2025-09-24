@@ -13,7 +13,7 @@ const Analysis = ({ explain }) => {
     RendimientoSobreActivos: "Rendimiento sobre Activos",
     RendimientoSobrePatrimonio: "Rendimiento sobre Patrimonio"
   };
-
+ 
   const scores = {
     RazonDeLiquidez: "Mayor a 1.5 y menor que 5",
     CapitalDeTrabajo: "Mayor que 0",

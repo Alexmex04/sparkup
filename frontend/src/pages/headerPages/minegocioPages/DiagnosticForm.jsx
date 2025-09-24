@@ -5,7 +5,7 @@ import Analysis from "./Analysis";
 import "./DiagnosticForm.css";
 import PDFDownload from "./PDFDownload";
 import { rootApi } from "../../../utils/api"; // ✅ cliente raíz (host sin /api)
-
+ 
 const DiagnosticForm = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();

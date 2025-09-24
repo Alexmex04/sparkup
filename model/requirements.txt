@@ -1,8 +1,8 @@
 uvicorn
 joblib
-imbalanced-learn
+imbalanced_learn
 pandas
 numpy
-scikit-learn
+scikit_learn
 jinja2
 python-multipart
