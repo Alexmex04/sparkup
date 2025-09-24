@@ -1,4 +1,5 @@
 import { spawn } from "child_process";
+//const { spawn } = require('child_process');
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -40,15 +41,12 @@ export const getPrediction = (req, res) => {
     const features = calcularFeatures(req.body);
 
     const path = require("path");
-    const scriptPath = path.join(__dirname, "..", "..", "model", "model.py");
-    const py = spawn("python", [scriptPath]);
+    const scriptPath = path.join(__dirname, "../../model/model.py");
+    const py = spawn("python3", [scriptPath]);
+    
 
-    py.stderr.on("data", (data) => {
-      console.error(`stderr: ${data}`);
-    });
-    py.on("close", (code) => {
-      console.log(`Python exited with code ${code}`);
-    });
+    py.stdout.on('data', data => console.log('Python stdout:', data.toString()));
+    py.stderr.on('data', data => console.error('Python stderr:', data.toString()));
 
 
     let result = "";
@@ -80,6 +78,7 @@ export const getPrediction = (req, res) => {
     
 
   } catch (error) {
-    res.status(500).json({ error: "Error en el servidor Node" });
+    console.error('Error completo de Python:', err);
+    res.status(500).json({ error: err.message });
   }
 };

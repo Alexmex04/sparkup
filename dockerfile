@@ -27,8 +27,5 @@ COPY . .
 # Establecer WORKDIR para Node
 WORKDIR /app/backend
 
-# Puerto dinámico de Render
-ENV PORT 5000
-
 # Comando de inicio
 CMD ["node", "index.js"]
