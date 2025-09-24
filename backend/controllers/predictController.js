@@ -78,7 +78,7 @@ export const getPrediction = (req, res) => {
     
 
   } catch (error) {
-    console.error('Error completo de Python:', err);
-    res.status(500).json({ error: err.message });
+    console.error('Error completo de Python:', error);
+    res.status(500).json({ error: error.message });
   }
 };
