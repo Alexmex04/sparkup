@@ -14,14 +14,12 @@ COPY backend/package*.json ./backend/
 WORKDIR /app/backend
 RUN npm install
 
-# Volver a la raíz
-WORKDIR /app
-
-# Copiar dependencias Python y instalar
-COPY model/requirements.txt ./model/
-RUN pip3 install -r model/requirements.txt
+# Instalar dependencias Python (desde backend/model/requirements.txt)
+COPY backend/model/requirements.txt ./model/
+RUN pip3 install -r ./model/requirements.txt
 
 # Copiar todo el proyecto
+WORKDIR /app
 COPY . .
 
 # Establecer WORKDIR para Node
