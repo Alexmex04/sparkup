@@ -39,7 +39,8 @@ export const getPrediction = (req, res) => {
 
     const features = calcularFeatures(req.body);
 
-    const scriptPath = path.resolve(__dirname, "../../model/model.py");
+    const path = require("path");
+    const scriptPath = path.join(__dirname, "..", "..", "model", "model.py");
     const py = spawn("python", [scriptPath]);
 
     let result = "";
