@@ -43,6 +43,14 @@ export const getPrediction = (req, res) => {
     const scriptPath = path.join(__dirname, "..", "..", "model", "model.py");
     const py = spawn("python", [scriptPath]);
 
+    py.stderr.on("data", (data) => {
+      console.error(`stderr: ${data}`);
+    });
+    py.on("close", (code) => {
+      console.log(`Python exited with code ${code}`);
+    });
+
+
     let result = "";
     py.stdout.on("data", (data) => {
       result += data.toString();
