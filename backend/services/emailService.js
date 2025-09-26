@@ -3,30 +3,32 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Resend } from 'resend';
 
 
 // Permite obtener la ruta actual del archivo ESModule
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
- 
-
+ /*
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, 
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
     auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS   // contraseña de app
+        user: process.env.MAILTRAP_USER,    // Tu User de Mailtrap
+        pass: process.env.MAILTRAP_PASS     // Tu Password de Mailtrap
     }
 });
+*/
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 
 // Función para enviar correo de verificación
 export const sendVerificationEmail = async (email, token) => {
     try {
-        await transporter.sendMail({
-            from: `"SparkUp" <${process.env.GMAIL_USER}>`,
+        await resend.emails.send({
+            from: `"SparkUp" <onboarding@sparkup25.xyz>`,
             to: email,
             subject: 'Verifica tu cuenta',
             html: `
@@ -54,8 +56,8 @@ export const sendVerificationEmail = async (email, token) => {
 export const SendForgotEmail = async (email, token) => {
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
     try {
-        await transporter.sendMail({
-            from: `"SparkUp" <${process.env.GMAIL_USER}>`,
+        await resend.emails.send({
+            from: `"SparkUp" <onboarding@sparkup25.xyz>`,
             to: email,
             subject: 'Restablecer contraseña',
             html: `
