@@ -9,25 +9,15 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
- /*
-const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-        user: process.env.MAILTRAP_USER,    // Tu User de Mailtrap
-        pass: process.env.MAILTRAP_PASS     // Tu Password de Mailtrap
-    }
-});
-*/
+ 
 
 const transporter = nodemailer.createTransport({
-service: 'gmail',    
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,  
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS   // contraseña de app
-    },
-    tls: {
-        rejectUnauthorized: false  
     }
 });
 
