@@ -25,7 +25,7 @@
 }
 .form-diagnostic{
   border: 1px solid #333;
-  background-color: #141414;
+  background-color: #121418;
   padding: 25px;
   border-radius: 15px;
   width: 800px;
@@ -91,8 +91,8 @@
   border-radius: 15px;
   width: 350px;
   max-width: 400px;
-  background-color: #111;
-  border: 1px solid #333;
+  background-color: #121418;
+  border: 1px solid #262a33;
 }
 
 .data-diagnostic{
