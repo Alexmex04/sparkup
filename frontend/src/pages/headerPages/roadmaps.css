@@ -4,7 +4,7 @@
 
 .roadmaps-list { display: grid; gap: 16px; }
 
-.roadmap-item { background: #111; border: 1px solid #1f1f1f; border-radius: 12px; padding: 12px; }
+.roadmap-item { background: #111; border: 1px solid #1f1f1f; border-radius: 12px; padding: 12px;}
 .roadmap-header { display:flex; align-items: center; gap: 10px; }
  
 .roadmap-pill {
@@ -42,3 +42,267 @@
 }
 
 .note { opacity: 0.8; margin-top: 14px; }
+
+/* === Skin visual (roadmaps) — solo colores === */
+.roadmaps-page { color: var(--text) !important; }
+.roadmaps-page h1 { color: var(--text) !important; }
+
+.roadmap-item {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 12px !important;
+  transition: background .15s, border-color .15s, box-shadow .2s;
+}
+.roadmap-item:hover { background: var(--surface-2) !important; border-color: var(--border-strong) !important; box-shadow: var(--shadow-soft); }
+
+.roadmap-pill {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border: 1px solid transparent !important;
+  border-radius: 20px !important;
+  transition: background .2s, box-shadow .2s, transform .08s;
+}
+.roadmap-pill:hover { background: var(--primary-600) !important; box-shadow: var(--shadow-soft); }
+.roadmap-pill:focus-visible { outline: none; box-shadow: var(--ring); }
+
+.like-btn,
+.roadmap-fav {
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  background: transparent !important;
+  border-radius: 10px !important;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.like-btn:hover,
+.roadmap-fav:hover { border-color: var(--primary) !important; color: var(--primary) !important; background: var(--hover) !important; }
+.like-btn.is-liked,
+.roadmap-fav.is-liked { border-color: var(--primary-600) !important; color: var(--primary) !important; }
+
+.roadmap-tags-container .roadmap-tag {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 12px !important;
+}
+
+/* Cabecera de bloque */
+.recommended-roadmaps h2 {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(14,165,233,.25);
+  text-decoration-line: underline;
+}
+
+/* Tarjetas con elevación al hover (sin mover nada) */
+.reco-card {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  transition: box-shadow .25s, border-color .2s, background .2s;
+}
+.reco-card:hover { box-shadow: var(--shadow-soft); border-color: var(--border-strong); }
+
+/* Más separación entre roadmaps (append-only, visual-only) */
+.roadmaps-list {
+  /* sube el espacio entre tarjetas de 16px a un valor responsive */
+  gap: clamp(20px, 2.2vw, 32px) !important;
+}
+
+/* Opcional: slightly tighter en móviles chicos */
+@media (max-width: 480px) {
+  .roadmaps-list { gap: 18px !important; }
+}
+
+/* Fallback solo si un navegador no soportara gap (raro hoy en día) */
+@supports not (gap: 1rem) {
+  .roadmap-item { margin-bottom: 24px; }
+  .roadmaps-list > .roadmap-item:last-child { margin-bottom: 0; }
+}
+
+/* Espacio vertical entre tarjetas dentro de roadmaps-section (sin cambiar layout) */
+.roadmaps-section > .roadmap-item + .roadmap-item {
+  margin-top: clamp(16px, 2.2vw, 16px);
+}
+
+@media (max-width: 480px) {
+  .roadmaps-section > .roadmap-item + .roadmap-item { margin-top: 18px; }
+}
+
+/* ===== HEADER POLISH PACK (append-only, visual-only) ===== */
+
+/* Barra principal: superficie pro + glow sutil */
+.navbar {
+  background: var(--surface) !important;
+  background-image: var(--grad-1) !important;
+  background-blend-mode: overlay;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  backdrop-filter: blur(6px);
+  transition: box-shadow .25s, border-color .2s, background .2s;
+}
+.navbar:hover { box-shadow: var(--shadow-soft); border-color: var(--border-strong) !important; }
+
+/* Logo: nitidez y presencia sin alterar tamaño */
+.logo-link, .navbar-logo { display: block; }
+.navbar-logo {
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.35));
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Links: subrayado animado “editorial” + estados */
+.nav-link {
+  position: relative;
+  color: var(--text) !important;
+  opacity: .95;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: color .2s ease, background .2s ease;
+}
+.nav-link:hover { background: var(--hover) !important; }
+
+/* subrayado animado (no mueve layout) */
+.nav-link::after {
+  content: "";
+  position: absolute; left: 10px; right: 10px; bottom: 6px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: .25;
+  transition: transform .22s ease;
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Página activa (si usas NavLink de React Router agrega class "active") */
+.nav-link.active {
+  color: var(--primary) !important;
+  background: rgba(14,165,233,.08) !important;
+  border: 1px solid var(--primary-600) !important;
+}
+
+/* Accesibilidad teclado */
+.nav-link:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+/* Botón de login/perfil como pastilla consistente */
+.login-button {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  transition: background .2s, box-shadow .2s, transform .12s;
+}
+.login-button:hover { background: var(--primary-600) !important; box-shadow: var(--shadow-soft); }
+.login-button:active { transform: translateY(1px); }
+.login-button:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* Campo de búsqueda (si existe esa clase en tu header) */
+.search-input {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  transition: box-shadow .2s, border-color .2s, background .2s;
+}
+.search-input::placeholder { color: var(--text-muted) !important; }
+.search-input:focus { outline: none; box-shadow: var(--ring); border-color: var(--primary) !important; }
+
+/* Mini separadores verticales opcionales (entre grupos de links) */
+.nav-separator {
+  width: 1px; height: 24px;
+  background: var(--border);
+  opacity: .9;
+  border-radius: 1px;
+}
+
+/* === Navy matte borders (append-only) === */
+:root { --navy-matte: #0b1a2a; --navy-matte-600: #17304b; }
+
+.roadmap-item { border-color: var(--navy-matte) !important; }
+.roadmap-item:hover { border-color: var(--navy-matte-600) !important; }
+
+/* Pill del título*/
+.roadmap-pill { border-color: var(--navy-matte) !important; }
+.roadmap-pill:hover { border-color: var(--navy-matte-600) !important; }
+
+/* Botón de like y favoritos (solo color del borde existente) */
+.like-btn, .roadmap-fav { border-color: var(--navy-matte) !important; }
+.like-btn:hover, .roadmap-fav:hover { border-color: var(--navy-matte-600) !important; }
+
+/* Tags de cada roadmap */
+.roadmap-tags-container .roadmap-tag { border-color: var(--navy-matte) !important; }
+.roadmap-tags-container .roadmap-tag:hover { border-color: var(--navy-matte-600) !important; }
+
+/* === Scroll interno SOLO para la caja de tags del roadmap === */
+.roadmap-tags-only {
+  display: flex;
+  flex-direction: column;   /* ← apila vertical */
+  flex-wrap: nowrap;        /* ← no wraps en varias filas */
+  gap: 8px;
+
+  max-height: 180px;        /* ajusta 160–240px según tu layout */
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-gutter: stable;
+}
+
+/* estética del scrollbar (conservada) */
+.roadmap-tags-only::-webkit-scrollbar { width: 8px; }
+.roadmap-tags-only::-webkit-scrollbar-track { background: #2c2c2c; border-radius: 4px; }
+.roadmap-tags-only::-webkit-scrollbar-thumb { background-color: #555; border-radius: 4px; }
+
+/* Firefox */
+.roadmap-tags-only { scrollbar-width: thin; scrollbar-color: #555 #2c2c2c; }
+
+@media (max-width: 768px) {
+  .roadmap-tags-only { max-height: 150px; }
+}
+
+/* Cada tag ocupa toda la línea para lectura tipo “renglón” */
+.roadmap-tags-only .roadmap-tag {
+  display: block;       /* ← línea completa */
+  width: 100%;
+  padding: 8px 10px;    /* un pelín más de aire en lista vertical */
+  line-height: 1.25;
+  border-radius: 10px;
+}
+
+/* === Like "ON": color de corazón y borde con la paleta del tema === */
+.like-btn.liked {
+  background: transparent !important;  /* o deja var(--hover) si te gusta con fondo */
+  color: var(--primary) !important;    /* ← color del corazón ♥ cuando está gustado */
+  border-color: var(--primary-600) !important;
+}
+
+/* (opcional) estado hover cuando ya está gustado */
+.like-btn.liked:hover {
+  background: var(--hover) !important;
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Thumb azul claro (tags de cada roadmap) */
+.roadmap-tags-only::-webkit-scrollbar-thumb {
+  background-color: #6ab8ff !important;
+}
+.roadmap-tags-only:hover::-webkit-scrollbar-thumb {
+  background-color: #56aefc !important; /* leve oscurecido al hover */
+}
+/* Firefox */
+.roadmap-tags-only {
+  scrollbar-color: #6ab8ff #2c2c2c !important;
+}
+
+/* === Scrollbar unificado (NAVY) para los tags del roadmap === */
+/* WebKit (Chrome/Edge/Safari) */
+.roadmap-tags-only::-webkit-scrollbar-thumb { background-color: #2e6aa3 !important; }
+.roadmap-tags-only::-webkit-scrollbar-track { background: #102a44 !important; }
+
+/* Hover (ligero realce del thumb) */
+.roadmap-tags-only:hover::-webkit-scrollbar-thumb { background-color: #2a6297 !important; }
+
+/* Firefox */
+.roadmap-tags-only { scrollbar-color: #2e6aa3 #102a44 !important; }

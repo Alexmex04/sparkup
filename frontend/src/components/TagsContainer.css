@@ -1,117 +1,162 @@
-/* Contenedor principal de los tags */
-/* Estilo de la barra de scroll */
+/* =========================
+   TagsContainer.css (consolidado)
+   - Paleta NAVY consistente
+   - Scrollbar unificado (thumb #2e6aa3 / track #102a44)
+   - Mantiene layout y estilos previos
+   ========================= */
+
+/* Paleta base (por si luego quieres ajustar en un solo lugar) */
+:root {
+  --navy-bg: #0b1f33;       /* fondo principal del contenedor */
+  --navy-bg-2: #102a44;     /* pista del scrollbar / tarjetas */
+  --navy-border: #2b4160;   /* borde principal */
+  --navy-border-strong: #3a5e85;
+  --scroll-thumb: #2e6aa3;  /* ★ thumb visible del scrollbar */
+  --scroll-track: #102a44;  /* pista del scrollbar */
+}
+
+/* =========================
+   Contenedor principal
+   ========================= */
+.tags-main-container {
+  /* fondo y bordes */
+  background: linear-gradient(180deg, #0e2238, var(--navy-bg-2)) !important; /* degradado leve */
+  border: 1px solid var(--navy-border) !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+
+  /* layout column para alojar buscador + lista con scroll */
+  display: flex;
+  flex-direction: column;
+
+  /* (por compatibilidad con estilos previos) */
+  /* si en otra hoja estableces height/flex-basis, esto no lo rompe */
+}
+
+/* =========================
+   Buscador
+   ========================= */
+.search-tags-wrapper {
+  padding: 10px;
+  border-bottom: 1px solid var(--navy-border) !important;
+}
+
+.search-tags-bar {
+  width: 100%;
+  background: #122b46 !important;
+  border: 1px solid var(--navy-border-strong) !important;
+  color: #ffffff !important;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  box-sizing: border-box;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.search-tags-bar::placeholder { color: #b9d1e8; }
+
+.search-tags-bar:focus {
+  outline: none;
+  border-color: #2bc9c8 !important;
+  box-shadow: 0 0 0 3px rgba(43,201,200,.28);
+}
+
+/* =========================
+   Lista con scroll (ocupa el resto)
+   ========================= */
+.tags-list {
+  padding: 10px;
+  overflow-y: auto;  /* scroll vertical */
+  flex-grow: 1;
+}
+
+/* Scrollbar (WebKit) */
+.tags-list::-webkit-scrollbar,
 .tags-main-container::-webkit-scrollbar {
   width: 8px;
 }
+
+.tags-list::-webkit-scrollbar-track,
 .tags-main-container::-webkit-scrollbar-track {
-  background: #2c2c2c;
-  border-radius: 4px;
-}
-.tags-main-container::-webkit-scrollbar-thumb {
-  background-color: #555;
+  background: var(--scroll-track) !important;
   border-radius: 4px;
 }
 
+.tags-list::-webkit-scrollbar-thumb,
+.tags-main-container::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb) !important;   /* ★ azul navy visible */
+  border-radius: 8px;
+}
+
+/* Scrollbar (Firefox) */
+.tags-list,
+.tags-main-container {
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track) !important;  /* thumb / track */
+}
+
+/* =========================
+   Tarjeta de cada tag
+   ========================= */
 .tag-item {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Empuja el botón y el like a los extremos */
-  background-color: #252525;
-  border: 1px solid #444;
-  border-radius: 8px; /* Bordes menos redondeados */
-  margin-bottom: 10px; /* Espacio vertical entre tags */
-  transition: background-color 0.2s, border-color 0.2s;
+  justify-content: space-between;
+  background: var(--navy-bg-2) !important;        /* tarjeta navy */
+  border: 1px solid #345679 !important;
+  border-radius: 12px !important;
+  margin-bottom: 10px;
+  transition: background .2s, border-color .2s, box-shadow .2s;
 }
 
 .tag-item:hover {
-  background-color: #333;
-  border-color: #666;
+  background: #133150 !important;
+  border-color: #3a7bbf !important;
+  box-shadow: 0 8px 20px rgba(5,18,32,.4);
 }
 
+/* Botón (texto del tag) */
 .tag-button {
-  background: none;
-  border: none;
-  color: #e0e0e0;
+  color: #ffffff !important;
+  background: transparent !important;
+  border: 1px solid transparent !important; /* evita “salto” al hover */
+  border-radius: 10px !important;
   padding: 12px 15px;
   font-size: 14px;
-  cursor: pointer;
-  text-align: left; /* Alinea el texto a la izquierda */
-  flex-grow: 1; /* Hace que el botón ocupe el espacio disponible */
+  text-align: left;
+  flex-grow: 1;
+  transition: color .15s, border-color .15s, background .15s, box-shadow .2s;
 }
 
+.tag-button:hover {
+  color: #29a0be !important;
+  border-color: #29a0be !important;
+  background: rgba(41,160,190,.10) !important;
+  box-shadow: 0 6px 16px rgba(5,18,32,.35);
+}
+
+.tag-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(43,201,200,.28);
+}
+
+/* =========================
+   Like del tag (icono ♥)
+   ========================= */
 .like-icon {
   padding-right: 15px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
   align-items: center;
+
+  color: #b9d1e8 !important;
+  transition: color .15s, transform .06s;
 }
 
-/* Contenedor principal de los tags */
-.tags-main-container {
-  border: 2px solid #333;
-  border-radius: 8px;
-  background-color: #1a1a1a;
-  flex-basis: 250px;
-  flex-shrink: 0;
-  height: 100%;
-  
-  /* --- NUEVO LAYOUT FLEX PARA ACOMODAR LA BÚSQUEDA --- */
-  display: flex;
-  flex-direction: column;
+.like-icon:hover {
+  color: #2bc9c8 !important;
+  transform: scale(1.06);
 }
 
-/* --- NUEVOS ESTILOS PARA LA BARRA DE BÚSQUEDA --- */
-.search-tags-wrapper {
-  padding: 10px;
-  border-bottom: 2px solid #333; /* Línea separadora */
-}
-
-.search-tags-bar {
-  width: 100%;
-  background-color: #2c2c2c;
-  border: 1px solid #444;
-  border-radius: 20px;
-  color: #e0e0e0;
-  padding: 8px 15px;
-  font-size: 14px;
-  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
-}
-
-.search-tags-bar::placeholder {
-  color: #888;
-}
-/* --- FIN DE NUEVOS ESTILOS --- */
-
-/* Adaptamos la lista para que ocupe el espacio restante y tenga scroll */
-.tags-list {
-  padding: 10px;
-  overflow-y: auto; /* Habilita el scroll VERTICAL */
-  flex-grow: 1; /* Ocupa el espacio restante */
-}
-
-/* Estilo de la barra de scroll (se mueve al nuevo contenedor .tags-list) */
-.tags-list::-webkit-scrollbar {
-  width: 8px;
-}
-.tags-list::-webkit-scrollbar-track {
-  background: #2c2c2c;
-  border-radius: 4px;
-}
-.tags-list::-webkit-scrollbar-thumb {
-  background-color: #555;
-  border-radius: 4px;
-}
-
-.tag-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #252525;
-  border: 1px solid #444;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  transition: background-color 0.2s, border-color 0.2s;
-}
-
-/* ... (el resto de los estilos para .tag-item:hover, .tag-button, .like-icon se mantienen igual) ... */
+.like-icon.liked { color: #2bc9c8 !important; } /* estado activo, bien visible */

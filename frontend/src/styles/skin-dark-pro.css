@@ -1,0 +1,476 @@
+/* === BASE (sin mover layout) === */
+:root { color-scheme: dark; }
+html, body { background: var(--bg) !important; color: var(--text) !important; }
+
+/* Links y texto */
+a { color: var(--primary); }
+a:hover { color: var(--primary-600); }
+.muted, .text-muted { color: var(--text-muted) !important; }
+
+/* === HEADER (sin tocar spacing ni flex) === */
+.navbar {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  background-image: var(--grad-1) !important;
+  backdrop-filter: blur(6px);
+}
+.nav-link {
+  color: var(--text) !important; opacity: .9;
+  border-radius: 8px;
+  transition: background .15s ease, color .15s ease;
+}
+.nav-link:hover { background: var(--hover); color: var(--text) !important; }
+
+/* Botón login/perfil ya existente */
+.login-button {
+  color: var(--text) !important;
+  border: 1px solid transparent !important;
+  background: var(--primary) !important;
+  border-radius: 10px !important;
+  box-shadow: none;
+  transition: background .2s, box-shadow .2s, transform .08s;
+}
+.login-button:hover { background: var(--primary-600) !important; box-shadow: var(--shadow-soft); }
+.login-button:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* === TAGS === */
+.tags-main-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+}
+.search-tags-bar {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+.search-tags-bar::placeholder { color: var(--text-muted) !important; }
+.search-tags-bar:focus { outline: none; box-shadow: var(--ring); }
+
+.tags-list::-webkit-scrollbar { width: 8px; }
+.tags-list::-webkit-scrollbar-track { background: var(--surface-2); border-radius: 4px; }
+.tags-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+.tag-item {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  transition: background .15s, border-color .15s;
+}
+.tag-item:hover { background: var(--surface-2) !important; border-color: var(--border-strong) !important; }
+
+.tag-button {
+  color: var(--text) !important;
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.tag-button:hover { color: var(--primary) !important; border-color: var(--primary) !important; background: var(--hover) !important; }
+.tag-button:focus-visible { outline: none; box-shadow: var(--ring); }
+
+.like-icon { color: var(--text-muted) !important; transition: color .15s, transform .05s; }
+.like-icon:hover { color: var(--primary-600) !important; transform: scale(1.06); }
+.like-icon.liked { color: var(--primary) !important; }
+
+/* === VIDEOS === */
+.videos-main-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+}
+.initial-message, .loading-message { color: var(--text-muted) !important; }
+
+.video-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  transition: transform .06s, box-shadow .2s, border-color .15s, background .15s;
+}
+.video-card:hover { transform: translateY(-1px); border-color: var(--border-strong) !important; box-shadow: var(--shadow-soft); }
+
+.video-embed { background: var(--surface-2) !important; }
+.video-card h3 { color: var(--text) !important; }
+.channel-name { color: var(--text-muted) !important; }
+
+/* === HOME (solo colores de tarjetas/inputs) === */
+.text-container, .block, .widget, .card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+}
+.text-container header,
+.block header, .widget header, .card header { color: var(--text) !important; }
+.text-container textarea,
+.text-container input[type="text"],
+.text-container input[type="search"] {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 10px !important;
+}
+.text-container textarea::placeholder,
+.text-container input::placeholder { color: var(--text-muted) !important; }
+.text-container textarea:focus,
+.text-container input:focus { outline: none; box-shadow: var(--ring); }
+
+/* === LOGIN / REGISTER === */
+.login-contenido { background: transparent !important; color: var(--text) !important; }
+.login-formulario {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  color: var(--text) !important;
+}
+.input-group label { color: var(--text-muted) !important; }
+.input-group input, .input-group select {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 10px !important;
+}
+.input-group input::placeholder { color: var(--text-muted) !important; }
+.input-group input:focus, .input-group select:focus { outline: none; box-shadow: var(--ring); }
+
+.btn-login, .btn-register {
+  background: var(--primary) !important; color: #fff !important; border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  transition: background .2s, box-shadow .2s, transform .08s;
+}
+.btn-login:hover, .btn-register:hover { background: var(--primary-600) !important; box-shadow: var(--shadow-soft); }
+.btn-login:focus-visible, .btn-register:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* === PERFIL === */
+.profile-container { color: var(--text) !important; }
+.boton-perfil {
+  background: var(--primary) !important; color: #fff !important; border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  transition: background .2s, box-shadow .2s, transform .08s;
+}
+.boton-perfil:hover { background: var(--primary-600) !important; box-shadow: var(--shadow-soft); }
+.boton-perfil:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* === RECOMENDADOS (perfil) === */
+.recommended-roadmaps h2 { color: var(--text) !important; }
+.reco-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  transition: background .15s, border-color .15s, box-shadow .2s;
+}
+.reco-card:hover { background: var(--surface-2) !important; border-color: var(--border-strong) !important; box-shadow: var(--shadow-soft); }
+.reco-title { color: var(--text) !important; }
+.reco-tags .reco-tag {
+  background: var(--surface-2) !important; color: var(--text) !important; border: 1px solid var(--border) !important; border-radius: 12px !important;
+}
+.reco-tag.liked { color: var(--primary) !important; border-color: var(--primary-600) !important; background: rgba(14,165,233,.12) !important; }
+
+/* === ROADMAPS PAGE === */
+.roadmaps-page h1 { color: var(--text) !important; }
+.roadmap-item {
+  background: var(--surface) !important; border: 1px solid var(--border) !important; border-radius: 12px !important;
+  transition: background .15s, border-color .15s, box-shadow .2s;
+}
+.roadmap-item:hover { background: var(--surface-2) !important; border-color: var(--border-strong) !important; box-shadow: var(--shadow-soft); }
+.roadmap-pill {
+  background: var(--primary) !important; color: #fff !important; border: 1px solid transparent !important; border-radius: 20px !important;
+  transition: background .2s, box-shadow .2s, transform .08s;
+}
+.roadmap-pill:hover { background: var(--primary-600) !important; box-shadow: var(--shadow-soft); }
+.roadmap-pill:focus-visible { outline: none; box-shadow: var(--ring); }
+.roadmap-fav {
+  border: 1px solid var(--border) !important; color: var(--text) !important; background: transparent !important; border-radius: 10px !important;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.roadmap-fav:hover { border-color: var(--primary) !important; color: var(--primary) !important; background: var(--hover) !important; }
+.roadmap-fav.is-liked { border-color: var(--primary-600) !important; color: var(--primary) !important; }
+
+/* Chips/tags dentro de roadmaps */
+.roadmap-tags-container .roadmap-tag {
+  background: var(--surface-2) !important; border: 1px solid var(--border) !important; color: var(--text) !important; border-radius: 12px !important;
+}
+
+/* === DIAGNÓSTICO / ANÁLISIS (Mi Negocio) === */
+.form-diagnostic, .explanation-block, .value-box {
+  background: var(--surface) !important; border: 1px solid var(--border) !important; border-radius: 12px !important; color: var(--text) !important;
+}
+.field input, .field select, .field textarea {
+  background: var(--surface-2) !important; border: 1px solid var(--border) !important; color: var(--text) !important; border-radius: 10px !important;
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--text-muted) !important; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; box-shadow: var(--ring); }
+
+.btn-diagnostic {
+  background: var(--primary) !important; color: #fff !important; border: 1px solid transparent !important; border-radius: 12px !important;
+  transition: background .2s, box-shadow .2s, transform .08s;
+}
+.btn-diagnostic:hover { background: var(--primary-600) !important; box-shadow: var(--shadow-soft); }
+.btn-diagnostic:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* Semáforo (conserva colores de estado) */
+.semaforo-verde { background: #10b981 !important; color: #0b0d10 !important; }
+.semaforo-amarillo { background: #f59e0b !important; color: #0b0d10 !important; }
+.semaforo-rojo { background: #ef4444 !important; color: #0b0d10 !important; }
+
+/* === FOOTER (append-only en skin) === */
+.footerClass {
+  background: var(--surface) !important;
+  border-top: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 12px !important;
+  padding: 10px 20px; /* no cambia layout global, solo relleno visual */
+}
+
+.footerClass h2 a { color: var(--text) !important; text-decoration: none !important; }
+.footerClass h2 a:hover { color: var(--primary) !important; }
+
+.footer-links { list-style: none; }
+.footer-links a { color: var(--primary) !important; text-decoration: none; }
+.footer-links a:hover { color: var(--primary-600) !important; text-decoration: underline; }
+
+/* Suaviza fuentes y mejora lectura */
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.1px;         /* microajuste neutro */
+  line-height: 1.45;             /* mejor ritmo de lectura */
+}
+
+/* Jerarquía sutil en títulos */
+h1 { font-weight: 800; }
+h2 { font-weight: 700; }
+h3 { font-weight: 700; opacity: .95; }
+
+/* Subrayado moderno en enlaces (no mueve layout) */
+a {
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1.5px;
+}
+
+/* Color de selección consistente con el acento */
+::selection {
+  background: rgba(14, 165, 233, 0.28);  /* var(--primary) con alpha */
+  color: var(--text);
+}
+
+/* Scrollbar global (sin cambiar tamaños de layout) */
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: var(--surface-2); }
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+}
+
+/* Focus visible consistente en todo el sitio */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: var(--ring); /* del theme.css */
+  border-color: var(--primary) !important;
+}
+
+/* Iconos y textos secundarios */
+svg, i, .icon {
+  color: currentColor;
+}
+.muted, .text-muted {
+  color: var(--text-muted) !important;
+  opacity: .95;
+}
+
+/* Tarjetas con elevación suave al hover */
+.u-soft {
+  transition: box-shadow .25s ease, border-color .2s ease, background .2s ease;
+}
+.u-soft:hover {
+  box-shadow: var(--shadow-soft);
+  border-color: var(--border-strong) !important;
+}
+
+/* Bordes sutiles para separar secciones (sin márgenes) */
+.hr, hr {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  opacity: .9;
+}
+
+/* Normaliza color de autofill en dark theme */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0px 1000px var(--surface-2) inset;
+  box-shadow: 0 0 0px 1000px var(--surface-2) inset;
+}
+
+.text-container:focus-within,
+.login-formulario:focus-within,
+.form-diagnostic:focus-within { box-shadow: var(--ring); }
+
+.reco-card a, .roadmap-item a, .video-card a {
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+.reco-card a:hover, .roadmap-item a:hover, .video-card a:hover { color: var(--primary-600); }
+
+/* ====== HOME: Roadmaps gustados (append-only, visual-only) ====== */
+
+/* Contenedor/título */
+.recommended-roadmaps h2,
+.liked-roadmaps h2,
+.home-liked-roadmaps h2 {
+  color: var(--text) !important;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(14,165,233,.25);
+  text-decoration-line: underline;
+  text-shadow: 0 1px 0 rgba(0,0,0,.15);
+}
+
+/* Tarjeta base */
+.reco-card,
+.roadmap-item--liked {
+  background: var(--surface) !important;
+  background-image: var(--grad-1) !important;      /* glow sutil */
+  background-blend-mode: overlay;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  transition: box-shadow .25s ease, border-color .2s ease, background .2s ease, color .2s ease;
+}
+.reco-card:hover,
+.roadmap-item--liked:hover {
+  box-shadow: var(--shadow-soft);
+  border-color: var(--border-strong) !important;
+}
+
+/* Header dentro de la tarjeta */
+.reco-header,
+.roadmap-header {
+  color: var(--text) !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,.12);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Título del roadmap */
+.reco-title,
+.roadmap-title {
+  color: var(--text) !important;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+/* Meta / descripción corta */
+.reco-meta,
+.roadmap-meta,
+.reco-card p,
+.roadmap-item--liked p {
+  color: var(--text-muted) !important;
+}
+
+/* Chips/etiquetas */
+.reco-tags .reco-tag,
+.roadmap-tags-container .roadmap-tag {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  transition: border-color .2s, color .2s, background .2s;
+}
+.reco-tags .reco-tag:hover,
+.roadmap-tags-container .roadmap-tag:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: var(--hover) !important;
+}
+
+/* “Me gusta” (estado) */
+.reco-like,
+.roadmap-fav,
+.like-btn {
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  background: transparent !important;
+  border-radius: 10px !important;
+  transition: color .2s, border-color .2s, background .2s, box-shadow .2s, transform .12s;
+}
+.reco-like:hover,
+.roadmap-fav:hover,
+.like-btn:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: var(--hover) !important;
+  box-shadow: var(--shadow-soft);
+}
+.reco-like.is-liked,
+.roadmap-fav.is-liked,
+.like-btn.is-liked,
+.like-icon.liked {
+  color: var(--primary) !important;
+  border-color: var(--primary-600) !important;
+  box-shadow: 0 0 0 2px rgba(14,165,233,.12);
+  background: rgba(14,165,233,.08) !important;
+}
+
+/* CTA/ver más dentro de cada tarjeta */
+.reco-actions .nav-link,
+.reco-actions .btn-link,
+.roadmap-cta,
+.reco-cta {
+  color: #fff !important;
+  background: var(--primary) !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  text-decoration: none !important;
+  transition: background .2s, box-shadow .2s, transform .12s;
+}
+.reco-actions .nav-link:hover,
+.reco-actions .btn-link:hover,
+.roadmap-cta:hover,
+.reco-cta:hover {
+  background: var(--primary-600) !important;
+  box-shadow: var(--shadow-soft);
+}
+.reco-actions .nav-link:active,
+.reco-actions .btn-link:active,
+.roadmap-cta:active,
+.reco-cta:active { transform: translateY(1px); }
+
+/* Links dentro de tarjetas */
+.reco-card a,
+.roadmap-item--liked a {
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+.reco-card a:hover,
+.roadmap-item--liked a:hover { color: var(--primary-600); }
+
+/* Focus contextual accesible (cuando hay inputs o botones dentro) */
+.reco-card:focus-within,
+.roadmap-item--liked:focus-within { box-shadow: var(--ring); }
+
+/* Placeholder/thumbnail (si lo tienes) */
+.reco-thumb,
+.roadmap-thumb {
+  background: var(--surface-2) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+/* Estado vacío o loading del listado */
+.reco-empty,
+.reco-loading {
+  color: var(--text-muted) !important;
+  text-shadow: none;
+  opacity: .95;
+}

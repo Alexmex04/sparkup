@@ -68,3 +68,87 @@
   width: 100%;
   height: 100%;
 }
+
+/* === SKIN PRO (append-only) === */
+.videos-main-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+}
+
+/* scroll */
+.videos-main-container::-webkit-scrollbar-track { background: var(--surface-2) !important; }
+.videos-main-container::-webkit-scrollbar-thumb { background-color: var(--border-strong) !important; }
+
+.initial-message, .loading-message { color: var(--text-muted) !important; }
+
+.video-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  transition: transform .06s, box-shadow .2s, border-color .15s, background .15s;
+}
+.video-card:hover { transform: translateY(-1px); border-color: var(--border-strong) !important; box-shadow: var(--shadow-soft); }
+
+.video-embed { background: var(--surface-2) !important; }
+.video-card h3 { color: var(--text) !important; }
+.channel-name { color: var(--text-muted) !important; }
+
+/* =========================
+   PATCH — Videos (contraste + tarjetas)
+   (append-only; sin cambiar layout)
+   ========================= */
+
+/* Contenedor principal */
+.videos-main-container {
+  background: #0b1f33 !important;
+  border: 1px solid #2b4160 !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+}
+
+/* Scrollbar */
+.videos-main-container::-webkit-scrollbar-track { background: #102a44 !important; }
+.videos-main-container::-webkit-scrollbar-thumb { background-color: #2e6aa3 !important; }
+
+/* Mensajes inicial/carga */
+.initial-message, .loading-message { color: #b9d1e8 !important; }
+
+/* Tarjeta de video */
+.video-card {
+  background: #102a44 !important;
+  border: 1px solid #345679 !important;
+  border-radius: 12px !important;
+  transition: transform .06s, box-shadow .2s, border-color .15s, background .15s;
+}
+.video-card:hover {
+  transform: translateY(-1px);
+  border-color: #3a7bbf !important;
+  box-shadow: 0 10px 24px rgba(5, 18, 32, .42);
+}
+
+/* Título y canal */
+.video-card h3 { color: #ffffff !important; text-shadow: 0 1px 0 rgba(0,0,0,.15); }
+.channel-name { color: #b9d1e8 !important; }
+
+/* Marco del embed */
+.video-embed { background: #133150 !important; border-radius: 10px !important; }
+
+/* === Navy matte borders (append-only) === */
+:root { --navy-matte: #0b1a2a; --navy-matte-600: #17304b; }
+
+.videos-main-container { border-color: var(--navy-matte) !important; }
+.videos-main-container::-webkit-scrollbar-thumb { background-color: var(--navy-matte-600) !important; }
+
+/* Cards y marco del embed (sin cambiar tamaños) */
+.video-card { border-color: var(--navy-matte) !important; }
+.video-card:hover { border-color: var(--navy-matte-600) !important; }
+.video-embed { border: 1px solid var(--navy-matte) !important; } /* solo color; si ya tienes borde, respeta su ancho */
+
+/* === Scrollbar unificado (NAVY) para videos === */
+.videos-main-container::-webkit-scrollbar-thumb { background-color: #2e6aa3 !important; }
+.videos-main-container::-webkit-scrollbar-track { background: #102a44 !important; }
+
+/* Firefox */
+.videos-main-container { scrollbar-color: #2e6aa3 #102a44 !important; }

@@ -1,3 +1,4 @@
+// src/pages/headerPages/profilePages/RecommendedRoadmaps.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./recommended-roadmaps.css";
@@ -7,6 +8,7 @@ import { getRoadmaps } from "../../../services/catalog";
 import useLiveLikes from "../../../hooks/useLiveLikes";
 
 const LIMIT_DEFAULT = 6;
+const MIN_PERCENT = 40; // ← solo recomendar con 40% o más
 
 export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
   const { user } = useContext(AuthContext);
@@ -15,7 +17,7 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
   const [loading, setLoading] = useState(true);
   const [reco, setReco] = useState([]); // [{id,title,slug,tags:[...], score, percent}]
 
-  // NUEVO: hook de likes en vivo (ids reales)
+  // Hook de likes (ids reales)
   const { likedTags, likedRoadmaps, loading: likesLoading } = useLiveLikes();
 
   useEffect(() => {
@@ -27,11 +29,11 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
       }
 
       try {
-        // ---- 1) Tags con like (preferimos IDs del hook)
-        let likedTagIds = likedTags; // Set<number> del hook
+        // 1) Tags con like (preferimos IDs del hook)
+        let likedTagIds = likedTags; // Set<number>
         let likedTagNames = undefined;
 
-        // Fallback: si no hay IDs (o set vacío), usamos nombres del localStorage
+        // Fallback a localStorage si el hook viene vacío
         if (!likedTagIds || likedTagIds.size === 0) {
           const localTags = getLikes(user)?.tags || {};
           likedTagIds = null;
@@ -42,13 +44,13 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
           );
         }
 
-        // ---- 2) Roadmaps con like (para excluir): Set<number> del hook
+        // 2) Roadmaps con like (para excluir)
         const likedRoadmapIds = likedRoadmaps || new Set();
 
-        // ---- 3) Catálogo con tags
+        // 3) Catálogo con tags
         const all = await getRoadmaps(); // [{id,title,slug,tags:[{id,name,slug}]}]
 
-        // ---- 4) Score (overlap) y porcentaje
+        // 4) Score (overlap) y porcentaje
         const scored = all
           .map((r) => {
             const total = Array.isArray(r.tags) ? r.tags.length : 0;
@@ -72,9 +74,9 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
             const percent = total > 0 ? Math.round((overlap / total) * 100) : 0;
             return { ...r, score: overlap, percent, totalTags: total };
           })
-          // Excluimos los que ya te gustan y los de 0% de afinidad
+          // ← AQUI: umbral mínimo del 40% y excluir los ya liked
           .filter(
-            (r) => r.percent > 0 && !likedRoadmapIds.has(Number(r.id))
+            (r) => r.percent >= MIN_PERCENT && !likedRoadmapIds.has(Number(r.id))
           )
           // Orden: mayor porcentaje y luego mayor overlap
           .sort((a, b) => (b.percent - a.percent) || (b.score - a.score))
@@ -115,7 +117,8 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
       <section className="recommended-roadmaps">
         <h2>Roadmaps</h2>
         <p className="muted small">
-          Aún no tengo suficientes señales de tus gustos. Dale like a algunos tags o roadmaps para afinar recomendaciones.
+          No encontré roadmaps con al menos {MIN_PERCENT}% de afinidad.
+          Prueba dando like a más tags para mejorar las coincidencias.
         </p>
       </section>
     );
@@ -130,8 +133,11 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
           <div key={roadmap.id} className="reco-card">
             <div className="reco-header">
               <h3 className="reco-title">{roadmap.title}</h3>
-              {/* Ahora el badge muestra el porcentaje */}
-              <span className="reco-badge" title={`${roadmap.score}/${roadmap.totalTags} tags en común`}>
+              {/* Badge con porcentaje */}
+              <span
+                className="reco-badge"
+                title={`${roadmap.score}/${roadmap.totalTags} tags en común`}
+              >
                 {roadmap.percent}%
               </span>
             </div>
@@ -139,12 +145,18 @@ export default function RecommendedRoadmaps({ limit = LIMIT_DEFAULT }) {
             <div className="reco-tags">
               {(roadmap.tags || []).map((t, idx) => {
                 const key = t?.id ?? t?.slug ?? t?.name ?? `${roadmap.id}-${idx}`;
-                return <span key={key} className="reco-tag-static">{t?.name ?? String(t)}</span>;
+                return (
+                  <span key={key} className="reco-tag-static">
+                    {t?.name ?? String(t)}
+                  </span>
+                );
               })}
             </div>
 
             <div className="reco-actions">
-              <Link to="/roadmaps" className="nav-link">Ver todos los roadmaps</Link>
+              <Link to="/roadmaps" className="nav-link">
+                Ver todos los roadmaps
+              </Link>
             </div>
           </div>
         ))}

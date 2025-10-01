@@ -1,3 +1,4 @@
+// src/pages/headerPages/roadmaps.jsx
 import React, { useEffect, useState, useContext } from "react";
 import "./roadmaps.css";
 import { AuthContext } from "../../components/AuthContext.jsx";
@@ -69,7 +70,7 @@ export default function Roadmaps() {
     const idNum = Number(rid);
     const idStr = String(rid);
 
-    // Por seguridad: no intentes persistir si el id no es entero positivo
+    // Por seguridad: no intentar persistir si el id no es entero positivo
     if (!Number.isInteger(idNum) || idNum <= 0) {
       console.warn("Roadmap con id inválido (no se puede persistir):", rid);
       setGuestLiked((prev) => {
@@ -91,7 +92,7 @@ export default function Roadmaps() {
     }
 
     try {
-      // UI/localStorage optimista (opcional)
+      // UI/localStorage optimista
       const likes = toggleRoadmapLike(user, idStr);
       // Persistencia real en BD + recarga automática con el hook
       if (!!likes.roadmaps?.[idStr]) await likeRoadmap(idNum);
@@ -131,7 +132,8 @@ export default function Roadmaps() {
               </div>
 
               {expanded[rm.id] && (
-                <div className="roadmap-tags-container">
+                //ativar el scroll
+                <div className="roadmap-tags-container roadmap-tags-only">
                   {(rm.tags || []).map((t) => (
                     <span key={t.id || t.slug || t.name} className="roadmap-tag">
                       {t.name}

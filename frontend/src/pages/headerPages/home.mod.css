@@ -1,47 +1,21 @@
-/* --- Estilos Base para el contenedor del Home --- */
-.App {
-  padding: 20px;
-  max-width: 95vw;
-  margin: 0 auto;
-}
+/* =========================================================
+   home.mod.css — Limpio y consolidado para el Home/Visitantes
+   Solo incluye clases usadas en src/pages/headerPages/home.jsx
+   ========================================================= */
 
-/* --- Contenedores de texto (idénticos) --- */
-.text-containers-wrapper {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.text-container {
-  flex: 1;
-  background-color: #1a1a1a;
-  border: 2px solid #333;
-  border-radius: 8px;
-  padding: 10px;
-  height: 150px;
-}
-.text-container textarea {
-  width: 100%;
-  height: 100%;
-  background: none;
-  border: none;
-  color: #e0e0e0;
-  font-family: inherit;
-  font-size: 20px;
-  font-weight: bold;
-  resize: none;
-}
-.text-container textarea:focus { outline: none; }
-.text-container textarea:read-only { cursor: default; }
-
-/* --- Layout principal (Tags + Videos) --- */
+/* ---------- Layout principal (Tags + Videos) ---------- */
 .main-content-area {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  height: 75vh;
+  height: 75vh;              /* conserva tu layout de 2 columnas */
 }
 
-/* --- CTA inferior --- */
+@media (max-width: 768px) {
+  .main-content-area { flex-direction: column; height: auto; }
+}
+
+/* ---------- CTA inferior ---------- */
 .call-to-action-section {
   text-align: center;
   padding: 40px 20px;
@@ -51,20 +25,24 @@
   font-size: 2.8em;
   margin-bottom: 15px;
   font-weight: bold;
+  text-decoration: underline;
+  text-decoration-color: rgba(43,201,200,.35);
+  text-underline-offset: 4px;
 }
-.text-green  { color: #28a745; }
-.text-yellow { color: #ffc107; }
-.text-red    { color: #dc3545; }
 .call-to-action-section p {
   font-size: 1.2em;
   color: #aaa;
   line-height: 1.6;
   margin: 5px 0;
 }
+.text-green  { color: #28a745; }
+.text-yellow { color: #ffc107; }
+.text-red    { color: #dc3545; }
+
 .cta-register-box {
-  border: 2px solid #333;
-  background-color: #1a1a1a;
-  border-radius: 8px;
+  border: 2px solid var(--border, #333);
+  background-color: var(--surface, #1a1a1a);
+  border-radius: 12px;
   padding: 20px;
   margin-top: 30px;
   max-width: 800px;
@@ -74,60 +52,398 @@
 .cta-register-box p {
   font-size: 1.1em;
   font-weight: bold;
-  color: #e0e0e0;
+  color: var(--text, #e0e0e0);
   line-height: 1.8;
   margin: 0;
 }
 
-/* --- Responsivo --- */
-@media (max-width: 768px) {
-  .text-containers-wrapper { flex-direction: column; }
-  .main-content-area { flex-direction: column; height: auto; }
+/* ---------- HERO para visitantes (no logueados) ---------- */
+.guest-hero {
+  background: linear-gradient(180deg, #0e2238, #102a44);
+  border: 1px solid #2b4160;
+  border-radius: 16px;
+  padding: clamp(16px, 3vw, 28px);
+  margin-bottom: 24px;
+  color: #eaf4ff;
+  box-shadow: 0 12px 28px rgba(7,23,37,.35), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.guest-hero-grid {
+  display: grid;
+  grid-template-columns: 1.35fr .9fr; /* más espacio al copy */
+  gap: clamp(16px, 3vw, 28px);
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .guest-hero-grid { grid-template-columns: 1fr; }
 }
 
-.home,
-.text-containers-wrapper,
-.main-content-area,
-.call-to-action-section {
+.guest-hero .hero-copy h1 {
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  line-height: 1.2;
+  margin: 0 0 8px;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.2);
+}
+.guest-hero .hero-sub {
+  margin: 0 0 10px;
+  color: #cfe6ff;
+  font-size: clamp(1rem, 1.8vw, 1.1rem);
+}
+
+.guest-hero .hero-steps {
+  margin: 10px 0 14px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  color: #cfe6ff;
+  font-size: clamp(0.98rem, 1.8vw, 1.05rem);
+}
+.guest-hero .hero-steps li {
   position: relative;
-  z-index: 0;
+  padding-left: 24px;
+}
+.guest-hero .hero-steps li::before {
+  content: "✓";
+  position: absolute;
+  left: 0; top: 0;
+  color: #2bc9c8;
+  font-weight: 800;
 }
 
-/*ROADMAPS ON HOME (LOGGED IN)*/
+.guest-hero .hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
 
-.roadmaps-section {margin-top:28px;}
-.roadmap-block {background: #111;border:1px solid #1f1f1f;border-radius:12px;padding:12px; margin-bottom:16px;}
-.roadmap-block-title {font-weight:700;margin-bottom:8px;color:#cfe;}
+/* Botones básicos */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: .2px;
+  transition: transform .1s, box-shadow .2s, background .2s, color .2s, border-color .2s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+  background: var(--primary, #2bc9c8);
+  color: #00131f; border: 1px solid transparent;
+}
+.btn-primary:hover { background: var(--primary-600, #29a0be); box-shadow: var(--shadow-soft, 0 8px 20px rgba(0,0,0,.25)); }
+.btn-ghost {
+  background: rgba(255,255,255,.06);
+  color: #eaf4ff;
+  border: 1px solid rgba(255,255,255,.18);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.12); }
 
-.roadmap-block-grid { display:grid; grid-template-columns: 320px 1fr; gap:16px; align-items:start; }
-.roadmap-tags-only { display:flex; flex-wrap:wrap; gap:8px; }
-.roadmap-tag-btn { background:#1a1a1a; color:#eaeaea; border:1px solid #333; border-radius:12px; padding:6px 10px; cursor:pointer; }
-.roadmap-videos { min-height: 100px; }
+/* Aside de “qué detecta / qué conoces” */
+.hero-aside { display: grid; gap: 12px; }
+.aside-card {
+  background: #0f273f;
+  border: 1px solid #3a5e85;
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #e6f2ff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+}
+.aside-title { margin: 0 0 8px; font-size: 1rem; color: #fff; }
+.aside-list { margin: 0; padding-left: 18px; color: #cfe6ff; }
+.aside-list li { margin: 4px 0; }
 
-.muted { opacity: 0.8; }
-.small { font-size: 0.95rem; }
+/* ---------- Tarjetas de texto (sin <textarea>) ---------- */
+.text-containers-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 2vw, 20px);
+  margin-bottom: clamp(16px, 2.5vw, 24px);
+  align-items: stretch;         /* columnas parejo */
+}
+@media (max-width: 900px) {
+  .text-containers-wrapper { grid-template-columns: 1fr; }
+}
 
+.text-container {
+  background: linear-gradient(180deg, #0e2238, #102a44);
+  border: 1px solid #2b4160;
+  border-radius: 14px;
+  padding: clamp(12px, 1.6vw, 16px);
+  color: var(--text, #eaf4ff);
+  box-shadow: 0 10px 24px rgba(7,23,37,.35), inset 0 1px 0 rgba(255,255,255,.04);
+  transition: box-shadow .2s ease, border-color .2s ease, transform .06s ease;
+
+  display: flex;                /* FIX overflow bullets */
+  flex-direction: column;
+  overflow: hidden;             /* corta desbordes visuales */
+}
+.text-container:hover {
+  border-color: #3a5e85;
+  box-shadow: 0 12px 28px rgba(7,23,37,.45), inset 0 1px 0 rgba(255,255,255,.05);
+  transform: translateY(-1px);
+}
+
+.tc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding-bottom: 6px;
+  flex: 0 0 auto;               /* no crece */
+}
+.tc-icon {
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  background: rgba(43,201,200,.15);
+  border: 1px solid rgba(43,201,200,.35);
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.25));
+}
+.tc-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.2);
+}
+
+/* Título realzado con badge (reutilizable) */
+.tc-title-accent {
+  position: relative;
+  font-size: 1.15rem;
+  letter-spacing: .2px;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.2);
+  margin: 0;
+  padding-bottom: 4px;
+}
+.tc-title-accent::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 120px;
+  max-width: 60%;
+  margin-top: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #29a0be, #2bc9c8);
+  opacity: .9;
+}
+.tc-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-left: 4px;
+  border-radius: 999px;
+  background: rgba(43,201,200,.18);
+  border: 1px solid rgba(43,201,200,.45);
+  color: #eaf4ff;
+  font-weight: 800;
+  letter-spacing: .3px;
+  line-height: 1.2;
+}
+
+.tc-body {
+  flex: 1 1 auto;               /* ocupa espacio restante */
+  min-height: 0;                /* permite encoger en flex */
+  display: grid;
+  gap: 8px;
+  overflow: auto;               /* ← FIX: bullets con scroll interno si exceden */
+  padding-right: 6px;           /* deja espacio al thumb del scrollbar */
+  scrollbar-gutter: stable;     /* evita saltos al aparecer la barra */
+}
+.tc-lead { color: #cfe6ff; margin: 0; line-height: 1.5; }
+.tc-bullets { margin: 0; padding-left: 18px; color: #cfe6ff; }
+.tc-bullets li { margin: 4px 0; line-height: 1.45; }
+
+/* ---------- ROADMAPS en Home (logueado) ---------- */
+.roadmaps-section { margin-top: 28px; }
+
+.roadmap-block {
+  background: var(--surface, #111);
+  border: 1px solid var(--border, #1f1f1f);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
+  color: var(--text, #cfe);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 10px 24px rgba(7,23,37,.40);
+  transition: border-color .18s ease, box-shadow .2s ease;
+}
+.roadmap-block:hover {
+  border-color: #17304b;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 12px 28px rgba(7,23,37,.48);
+}
+
+.roadmap-block-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.15);
+  border-bottom: 1px solid rgba(11,26,42,.35);
+  padding-bottom: 6px;
+}
+
+.roadmap-block-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: clamp(20px, 2.2vw, 32px);
+  align-items: start;
+  border-top: 1px solid rgba(11,26,42,.35);
+  padding-top: 12px;
+}
 @media (max-width: 900px) {
   .roadmap-block-grid { grid-template-columns: 1fr; }
 }
 
-.roadmap-videos {
-  /* Altura fija razonable para que aparezca el scrollbar cuando haya muchos videos */
-  max-height: 420px;       /* ajusta a tu gusto: 360px, 480px, etc. */
-  overflow-y: auto;        /* <-- activa scroll vertical */
-  padding-right: 8px;      
+/* Tags del roadmap (lista vertical con scroll si hace falta) */
+.roadmap-tags-only {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-gutter: stable;
+}
+.roadmap-tag-btn {
+  color: var(--text, #eaeaea);
+  background: var(--surface-2, #102a44);
+  border: 1px solid #345679;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  transition: color .2s, border-color .2s, background .2s, box-shadow .2s, transform .12s;
+}
+.roadmap-tag-btn:hover {
+  color: #29a0be;
+  border-color: #29a0be;
+  background: rgba(41,160,190,.10);
+  box-shadow: 0 8px 22px rgba(7,23,37,.35);
 }
 
-.roadmap-videos::-webkit-scrollbar {
+/* Área de videos con scroll interno */
+.roadmap-videos {
+  max-height: 420px;            /* ajusta 360–480px si prefieres */
+  overflow-y: auto;
+  padding-right: 8px;
+  color: var(--text, #eaeaea);
+}
+.roadmap-videos .muted,
+.roadmap-videos .small {
+  color: var(--text-muted, #9fb3c8);
+}
+
+/* Scrollbars (NAVY) para los contenedores con overflow del Home */
+.roadmap-videos::-webkit-scrollbar,
+.roadmap-tags-only::-webkit-scrollbar,
+.tc-body::-webkit-scrollbar {
   width: 8px;
 }
-.roadmap-videos::-webkit-scrollbar-track {
-  background: transparent;
+.roadmap-videos::-webkit-scrollbar-track,
+.roadmap-tags-only::-webkit-scrollbar-track,
+.tc-body::-webkit-scrollbar-track {
+  background: #102a44;          /* pista navy */
 }
-.roadmap-videos::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.25);
-  border-radius: 4px;
+.roadmap-videos::-webkit-scrollbar-thumb,
+.roadmap-tags-only::-webkit-scrollbar-thumb,
+.tc-body::-webkit-scrollbar-thumb {
+  background-color: #2e6aa3;    /* thumb navy visible */
+  border-radius: 8px;
 }
-.roadmap-videos:hover::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.4);
+/* Firefox */
+.roadmap-videos,
+.roadmap-tags-only,
+.tc-body {
+  scrollbar-color: #2e6aa3 #102a44;
 }
+
+/* Utilidades */
+.muted { opacity: .85; }
+.small { font-size: 0.95rem; }
+
+/* === Realce NAVY para .text-container (destaca como tarjeta protagonista) === */
+.text-container {
+  /* mismo tono base que el hero, pero con contraste un poco mayor */
+  background: linear-gradient(180deg, #0e2238 0%, #0f2a46 100%) !important;
+  border: 1px solid #3a5e85 !important;
+  box-shadow:
+    0 14px 30px rgba(7, 23, 37, .48),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+  position: relative; /* necesario para la banda izquierda */
+}
+
+/* Banda decorativa en el borde izquierdo para acento navy */
+.text-container::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+  background: linear-gradient(180deg, #2e6aa3, #29a0be);
+  opacity: .95;
+}
+
+/* Header y elementos internos con leve contraste */
+.tc-header {
+  border-bottom: 1px solid rgba(255,255,255,.10) !important;
+}
+.tc-icon {
+  background: rgba(46,106,163,.18) !important;
+  border: 1px solid rgba(46,106,163,.45) !important;
+}
+.tc-title-accent::after {
+  background: linear-gradient(90deg, #2e6aa3, #29a0be) !important;
+}
+.tc-badge {
+  background: rgba(46,106,163,.18) !important;
+  border: 1px solid rgba(46,106,163,.45) !important;
+}
+
+.tc-body {
+  overflow: auto;          /* scroll interno si es necesario */
+  padding-right: 8px;      /* espacio para el thumb del scrollbar */
+  scrollbar-gutter: stable;
+}
+
+/* ====== Intro para usuarios logueados ====== */
+.user-intro {
+  background: linear-gradient(180deg, #0e2238, #102a44);
+  border: 1px solid #2b4160;
+  border-radius: 14px;
+  padding: clamp(14px, 2.4vw, 20px);
+  margin: 0 0 20px;
+  color: #eaf4ff;
+  box-shadow: 0 10px 24px rgba(7,23,37,.35), inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.user-intro__title {
+  margin: 0 0 6px;
+  font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.2);
+}
+
+.user-intro__subtitle {
+  margin: 0 0 12px;
+  color: #cfe6ff;
+  line-height: 1.55;
+  font-size: clamp(0.98rem, 1.8vw, 1.05rem);
+}
+
+.user-intro__cta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+

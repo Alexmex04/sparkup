@@ -1,3 +1,4 @@
+// src/pages/headerPages/home.jsx
 import React, { useState, useContext, useMemo, useEffect, useRef } from "react";
 import "./home.mod.css";
 
@@ -7,8 +8,6 @@ import { AuthContext } from "../../components/AuthContext.jsx";
 
 import { getLikes } from "../../utils/userPrefs";
 import { getTags, getRoadmaps } from "../../services/catalog";
-
-// 🔌 Hook de tiempo real (WS) para likes (tags y roadmaps)
 import useLiveLikes from "../../hooks/useLiveLikes";
 
 function Home() {
@@ -162,28 +161,124 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Texto para visitantes */}
+      {/* === HERO para visitantes (no logueados) === */}
+      {!isLogged && (
+        <section className="guest-hero">
+          <div className="guest-hero-grid">
+            <div className="hero-copy">
+              <h1>Haz un diagnóstico de tu negocio y verifica su rentabilidad en minutos</h1>
+
+              {/* Subtítulo: NO tocar */}
+              <p className="hero-sub">
+                Explora <strong>TAGS</strong> pensados para búsquedas reales en YouTube
+                y sigue <strong>ROADMAPS</strong> ordenados para avanzar paso a paso.
+              </p>
+
+              <ul className="hero-steps">
+                <li>
+                  Entra a <strong>Mi Negocio</strong> y completa el formulario
+                </li>
+                <li>
+                  Usa datos simples (ventas, costos, gastos) — unas sumas y listo
+                </li>
+                <li>
+                  Obtén tu <strong>Semáforo PyME</strong> y recomendaciones accionables
+                </li>
+              </ul>
+
+              <div className="hero-cta">
+                <a href="#explorar" className="btn btn-primary">Explorar TAGS</a>
+                <a href="/login" className="btn btn-ghost">Crear cuenta</a>
+              </div>
+            </div>
+
+            <aside className="hero-aside">
+              <div className="aside-card">
+                <h4 className="aside-title">¿Qué te ayuda a detectar?</h4>
+                <ul className="aside-list">
+                  <li>Si hoy tu negocio es rentable</li>
+                  <li>Tu punto de equilibrio (breakeven)</li>
+                  <li>Fugas de caja y gastos"fantasma"</li>
+                  <li>Márgenes débiles o precios mal calibrados</li>
+                </ul>
+              </div>
+              <div className="aside-card">
+                <h4 className="aside-title">¿Que vas a conocer?</h4>
+                <ul className="aside-list">
+                  <li>Flujo de caja estimado y su tendencia</li>
+                  <li>Estructura de costos y gastos</li>
+                  <li>Dependencia del negocio a las ventas actuales</li>
+                  <li>Tu <strong>Semáforo PyME</strong> con acciones sugeridas</li>
+                </ul>
+              </div>
+            </aside>
+          </div>
+        </section>
+      )}
+
+      {/* Text cards (sin textarea) */}
       {!isLogged && (
         <div className="text-containers-wrapper">
           <div className="text-container">
-            <textarea
-              readOnly
-              defaultValue={`Amplía tu conocimiento en finanzas personales e inversiones. 
-Haz click en los TAGS que tenemos para ti y adéntrate a los videos que mejor te ayuden en tu camino de aprendizaje.
-¡Haz click en Log-In y regístrate ahora!`}
-            />
+            <header className="tc-header">
+              <div className="tc-icon" aria-hidden>🎓</div>
+              <h3 className="tc-title tc-title-accent">
+                Aprende con <span className="tc-badge">TAGS</span>
+              </h3>
+            </header>
+
+            <div className="tc-body">
+              <p className="tc-lead">
+                Amplía tu conocimiento con TAGS y ROADMAPS especializados para una búsqueda inteligente.
+              </p>
+              <ul className="tc-bullets">
+                <li>Encuentra contenido útil en YouTube sin perderte en el ruido.</li>
+                <li>Sigue rutas paso a paso: de cero a “lo aplico hoy”.</li>
+                <li>Presupuesto, deudas, inversión básica y más.</li>
+              </ul>
+            </div>
           </div>
+
           <div className="text-container">
-            <textarea
-              readOnly
-              defaultValue={`Al registrarte, podrás guardar tus TAGS y ROADMAPS favoritos y, además, habilitarás el módulo "Mi Negocio" para tu Semáforo PyME.`}
-            />
+            <header className="tc-header">
+              <div className="tc-icon" aria-hidden>⭐</div>
+              <h3 className="tc-title tc-title-accent">
+                Guarda y recibe <span className="tc-badge">recomendaciones</span>
+              </h3>
+            </header>
+
+            <div className="tc-body">
+              <p className="tc-lead">
+                Al registrarte, podrás guardar tus TAGS y ROADMAPS favoritos y habilitar el módulo <strong>“Mi Negocio”</strong> para tu Semáforo PyME.
+              </p>
+              <ul className="tc-bullets">
+                <li>Recomendaciones personalizadas según tus intereses.</li>
+                <li>Acceso rápido a lo que estás aprendiendo.</li>
+                <li>Decisiones claras con datos simples.</li>
+              </ul>
+            </div>
           </div>
         </div>
       )}
 
       {/* Sección principal: Tags (izq) + Videos (der) */}
-      <div className="main-content-area">
+      {isLogged && (
+        <section className="user-intro">
+          <h2 className="user-intro__title">Empieza a aprender hoy</h2>
+          <p className="user-intro__subtitle">
+            Explora <strong>TAGS</strong> para profundizar en temas específicos de educación financiera,
+            o sigue <strong>ROADMAPS</strong> para avanzar paso a paso en un tema. 
+            Además, usa el botón <strong>“Mi Negocio”</strong> en el menú para realizar el diagnóstico
+            de tu negocio y validar su rentabilidad.
+          </p>
+          <div className="user-intro__cta">
+            <a href="#explorar" className="btn btn-primary">Buscar TAGS</a>
+            <a href="/roadmaps" className="btn btn-ghost">Ver ROADMAPS</a>
+            {/* Nota: "Mi Negocio" vive en el header, por eso no enlazamos aquí una ruta desconocida */}
+          </div>
+        </section>
+      )}
+      <div className="main-content-area" id="explorar">
         <TagsContainer
           tags={tagsList}
           onTagSelect={handleTagSelect}
