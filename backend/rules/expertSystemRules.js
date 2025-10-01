@@ -242,16 +242,26 @@ export function evaluateFinancials(data) {
     const capitaltrabajo = parseFloat(parseFloat(data.activo_corriente) - parseFloat(data.pasivo_corriente));  //Total de Activos - Total de Pasivos
 
     const RazonEndeudamiento = parseFloat(parseFloat(data.total_pasivos)/parseFloat(data.total_activos)); //Pasivo_Total_financiado / Activo_Total_financiado
-    const deudaPatrimonio = parseFloat(parseFloat(data.total_pasivos)/ (parseFloat(data.total_activos)-parseFloat(data.total_pasivos)));   //Total Pasivos / (Total activo -Total Pasivo)
+    const Patrimonio = (parseFloat(data.total_activos)-parseFloat(data.total_pasivos));
+    const deudaPatrimonio = parseFloat(parseFloat(data.total_pasivos)/ Patrimonio);   //Total Pasivos / (Total activo -Total Pasivo)
     
     const inventario_promedio = parseFloat((parseFloat(data.inventario_inicial)+parseFloat(data.inventario_final)/2))
     const Rotacioninventario = parseFloat(parseFloat(data.costo_ventas)/ parseFloat(inventario_promedio) ); //COGS / Inventario_Promedio
-    const RotacionCuentas = parseFloat(parseFloat(data.ventas_credito)/parseFloat(data.cuentas_por_cobrar));   //Ventas_a_Crédito / Cuentas_por_Cobrar_Promedio
     const RotacionActivos = parseFloat(parseFloat(data.ventas_totales)/parseFloat(data.total_activos)); //Ventas_Totales / Activo_Total
-  
-    const MargenNe = parseFloat(parseFloat(data.utilidad_neta)/parseFloat(data.ventas_totales));  //Utilidad_Neta / Ventas_Totales
-    const RendimientoActivos = parseFloat(parseFloat(data.utilidad_neta)/parseFloat(data.total_activos));  //Utilidad_Neta / Activo_Total
-    const RendimientoPatrimonio = parseFloat(parseFloat(data.utilidad_neta)/parseFloat(data.patrimonio)); //Utilidad_Neta / Patrimonio
+   
+    let RotacionCuentas;
+
+    if (parseFloat(data.ventas_credito) === 0 || parseFloat(data.cuentas_por_cobrar) === 0) {
+      RotacionCuentas = 6;
+    } else {
+      RotacionCuentas = parseFloat(data.ventas_credito) / parseFloat(data.cuentas_por_cobrar);
+    }
+    //const RotacionCuentas = parseFloat(parseFloat(data.ventas_credito)/parseFloat(data.cuentas_por_cobrar));   //Ventas_a_Crédito / Cuentas_por_Cobrar_Promedio
+    const Utilidad_Neta = parseFloat(data.ventas_totales) - parseFloat(data.costo_ventas) - (parseFloat(data.ventas_totales)*0.15);
+    const MargenNe = parseFloat(Utilidad_Neta/parseFloat(data.ventas_totales));  //Utilidad_Neta / Ventas_Totales
+    const RendimientoActivos = Utilidad_Neta/parseFloat(data.total_activos);  //Utilidad_Neta / Activo_Total
+    
+    const RendimientoPatrimonio = parseFloat(Utilidad_Neta/Patrimonio); //Utilidad_Neta / Patrimonio
 
 
     //Evaluar metricas

@@ -30,97 +30,53 @@ const PDFDownload = ({ formData, score, predictionTree, explain, scoreTree}) => 
   };
 
 
+const handleDownloadPDF = () => {
+  const doc = new jsPDF("p", "pt", "a4");
 
-  const handleDownloadPDF = () => {
-    const doc = new jsPDF("p", "pt", "a4");
-    let y = 40;
+  // --- Fondo blanco (por defecto) ---
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, 595, 842, "F"); 
 
-    // --- Título ---
-    doc.setFontSize(18);
-    doc.text("Semáforo PyME", 40, y);
-    y += 30;
+  doc.setTextColor(0, 0, 0); // texto negro
+  doc.setFontSize(20);
+  doc.text("Diagnóstico financiero", 200, 50);
 
-    // --- Formulario ---
-    doc.setFontSize(14);
-    doc.text("Formulario de Evaluación", 40, y);
-    y += 20;
-    doc.setFontSize(12);
+  // === Recuadro 1: Sistema experto ===
+  doc.setFillColor(240, 240, 240); // recuadro gris claro
+  doc.roundedRect(40, 100, 160, 120, 8, 8, "F"); 
+  doc.setFontSize(12);
+  doc.text("Sistema experto", 60, 120);
+  doc.text(`Resultado: ${getDiagnostico(score)}`, 50, 160, { maxWidth: 140 });
+  doc.text(`Puntaje: ${score}`, 50, 190);
 
-    Object.entries(formData).forEach(([key, value]) => {
-      const label = metricNames[key] || key;
-      doc.text(`${label}: ${value}`, 40, y);
-      y += 18;
-      if (y > 780) { doc.addPage(); y = 40; }
-    });
+  // === Recuadro 2: Modelo ML ===
+  doc.setFillColor(240, 240, 240);
+  doc.roundedRect(220, 100, 160, 120, 8, 8, "F"); 
+  doc.setFontSize(12);
+  doc.text("Modelo de Machine Learning", 230, 120, { maxWidth: 140 });
+  const mlPred = predictionTree === 0 ? "Fuera de riesgo" : "En riesgo";
+  doc.text(`Predicción: ${mlPred}`, 230, 160, { maxWidth: 140 });
+  doc.text(`Puntaje estimado: ${(Math.max(...scoreTree) * 100).toFixed(1)}%`, 230, 180);
 
-    y += 20;
-    // --- Diagnóstico ---
-    doc.setFontSize(14);
-    doc.text("Diagnóstico Financiero", 40, y);
-    y += 20;
-    doc.setFontSize(12);
+  // === Recuadro 3: Semáforo ===
+  doc.setFillColor(240, 240, 240);
+  doc.roundedRect(400, 100, 160, 120, 8, 8, "F"); 
+  doc.setFontSize(12);
+  doc.text("Semáforo", 450, 120);
 
-    // Sistema Experto
-    doc.text("Sistema experto:", 40, y);
-    y += 18;
-    doc.text(`Resultado: ${getDiagnostico(score)}`, 60, y);
-    y += 18;
-    doc.text(`Puntaje: ${score}`, 60, y);
-    y += 20;
+  // círculo del semáforo
+  const semColor = getSemaforoColor(score, predictionTree);
+  doc.setFillColor(semColor);
+  doc.circle(480, 170, 25, "F"); 
 
-    // Modelo ML
-    doc.text("Modelo de Machine Learning:", 40, y);
-    y += 18;
-    const mlPred = predictionTree === 0 ? "Fuera de riesgo" : "En riesgo";
-    doc.text(`Predicción: ${mlPred}`, 60, y);
-    y += 18;
-    doc.text(`Puntaje estimado: ${(Math.max(...scoreTree) * 100).toFixed(1)}%`, 60, y);
-    y += 20;
-
-    // Semáforo
-    const semColor = getSemaforoColor(score, predictionTree);
-    doc.setFillColor(semColor);
-    doc.rect(40, y, 30, 30, "F");
-    doc.text("Semáforo", 80, y + 20);
-    y += 50;
-
-    // --- Puntajes óptimos ---
-    doc.setFontSize(14);
-    doc.text("Puntajes Óptimos", 40, y);
-    y += 20;
-    doc.setFontSize(12);
-
-    Object.values(explain).forEach((item) => {
-      const label = metricNames[item.metric] || item.metric;
-      doc.text(`${label}:`, 40, y);
-      y += 18;
-      const value = typeof item.value === "number" ? item.value.toFixed(2) : item.value;
-      doc.text(`Valor Obtenido: ${value}`, 60, y);
-      y += 18;
-      doc.text(`Rango Óptimo: ${scores[item.metric] || "N/A"}`, 60, y);
-      y += 20;
-      if (y > 780) { doc.addPage(); y = 40; }
-    });
-
-    // --- Análisis Detallado ---
-    y += 30;
-    doc.setFontSize(14);
-    doc.text("Análisis Detallado y Recomendaciones", 40, y);
-    y += 20;
-    doc.setFontSize(12);
-
-    Object.values(explain).forEach((item) => {
-      const label = metricNames[item.metric] || item.metric;
-      doc.text(`${label}:`, 40, y);
-      y += 18;
-      doc.text(`${item.explanation}`, 60, y);
-      y += 20;
-      if (y > 780) { doc.addPage(); y = 40; }
-    });
+///HASTA AQUI arriba calcula muy bien los tres recuadros sin problema ahora falta lo demqas
 
 
-    doc.save("diagnostico_pyme.pdf");
-  };
+
+  doc.save("diagnostico.pdf");
+};
+
+
 
   // Funciones de apoyo
   const getDiagnostico = (score) => {
