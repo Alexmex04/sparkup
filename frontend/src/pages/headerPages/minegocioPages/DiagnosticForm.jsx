@@ -5,6 +5,7 @@ import { AuthContext } from "../../../components/AuthContext.jsx";
 import Analysis from './Analysis';
 import "./DiagnosticForm.css";
 import PDFDownload from './PDFDownload';
+import { rootApi } from "../../../utils/api"; 
 
 const DiagnosticForm= () => {
   const { user} = useContext(AuthContext);
@@ -45,74 +46,62 @@ const DiagnosticForm= () => {
     }))
   }
 
-  const SystemExpertDiagnosis = async() => {
+   const SystemExpertDiagnosis = async () => {
     try {
-      
-        const res = await axios.post('http://localhost:5000/model/diagnostic', 
-      formData
-    );
-    
-        setScore(res.data.overall.score);
-        
-        setExplain(res.data.details);
-       
-        
-        return {score: res.data.overall.score};
+      // ✅ En producción: https://sparkup-6ood.onrender.com/model/diagnostic
+      const res = await rootApi.post("/model/diagnostic", formData);
+      setScore(res.data.overall.score);
+      setExplain(res.data.details);
+      return { score: res.data.overall.score };
     } catch (error) {
-      console.error('Error al calcular en el sistema experto:', error)
+      console.error("Error al calcular en el sistema experto:", error);
+      return { score: null };
     }
-  }
+  };
 
-  const TreeDiagnosis = async() => {
-    
-    try{
-      const response = await axios.post(
-        "http://localhost:5000/model/predict",
-        formData, 
-        { headers: { "Content-Type": "application/json" } }
-      );
-
+  const TreeDiagnosis = async () => {
+    try {
+      // ✅ En producción: https://sparkup-6ood.onrender.com/model/predict
+      const response = await rootApi.post("/model/predict", formData, {
+        headers: { "Content-Type": "application/json" },
+      });
       setPredictionTree(response.data.prediction);
-
-      setScoreTree([response.data.probability_class_0, response.data.probability_class_1]);
-    
-      return {predictionTree: response.data.prediction };
-      
-    }catch(error) {
-      console.error('Error al calcular en el modelo:', error)
+      setScoreTree([
+        response.data.probability_class_0,
+        response.data.probability_class_1,
+      ]);
+      return { predictionTree: response.data.prediction };
+    } catch (error) {
+      console.error("Error al calcular en el modelo:", error);
+      return { predictionTree: null };
     }
-  }
+  };
 
  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-       const SEresult = await SystemExpertDiagnosis();
-
+      const SEresult = await SystemExpertDiagnosis();
       const MLresult = await TreeDiagnosis();
 
-          const payload = {
-            ...formData,                 
-            predictionTree: MLresult.predictionTree,   
-            score: SEresult.score,
-             user_id: user?.id                
-          };
-          
+      const payload = {
+        ...formData,
+        predictionTree: MLresult?.predictionTree ?? null,
+        score: SEresult?.score ?? null,
+        user_id: user?.id,
+      };
 
+      // ✅ En producción: https://sparkup-6ood.onrender.com/modelData
+      await rootApi.post("/modelData", payload, {
+        headers: { "Content-Type": "application/json" },
+      });
 
-             const response = await axios.post(
-              "http://localhost:5000/modelData",
-              payload,
-              { headers: { "Content-Type": "application/json" } }
-            );
-
-            console.log("Datos guardados correctamente");
-              
+      console.log("Datos guardados correctamente");
     } catch (error) {
-      console.error('Error al calcular:', error)
+      console.error("Error al calcular:", error);
     }
-  }
+  };
 
 
   const getDiagnostico = (score) => {
