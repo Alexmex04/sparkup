@@ -5,6 +5,7 @@ import { AuthContext } from "../../../components/AuthContext.jsx";
 import Analysis from './Analysis';
 import "./DiagnosticForm.css";
 import PDFDownload from './PDFDownload';
+import { generateSmartTooltip } from './generateSmartTooltip.jsx';
 import { rootApi } from "../../../utils/api"; 
 
 const DiagnosticForm= () => {
@@ -152,7 +153,16 @@ const handleSubmit = async (e) => {
     <div className='main-cont'>
       <h2 className='semaforo'>Semáforo financiero</h2>
       <form onSubmit={handleSubmit} className='form-diagnostic'>
-        <h3 className='title-diagnostic'>Formulario de evaluación</h3>
+        <h3 className='title-diagnostic'>Formulario de evaluación
+
+                    <span className="info-tooltip-icon">?
+                      <span className="info-tooltip-text">
+                        Información necesaria para obtener liquidez, endeudamiento, eficiencia operativa y rentabilidad de para evaluar la salud del negocio.
+                      </span>
+                    </span>
+
+
+        </h3>
         <div className='form-Cont'>
             <div className='grid-cont'>
                
@@ -387,19 +397,46 @@ const handleSubmit = async (e) => {
       <div className='cont-results'>
       {score && (
         <div className='cont-individual-result'>
-        <h3 className='title-diagnostic'>Sistema experto</h3>
+        <h3 className='title-diagnostic'>Sistema experto
+        
+          <span className="info-tooltip-icon">?
+            <span className="info-tooltip-text">
+              El sistema experto evalúa tus finanzas (liquidez, deudas, eficiencia y rentabilidad), 
+              les da una calificación y genera un puntaje global sobre la salud de tu negocio.
+            </span>
+          </span>
+        
+        </h3>
           <div className='data-diagnostic'>
             <p>Resultado: </p>
             <span>{getDiagnostico(score)}</span>
             <p>Puntaje: </p>
             <span>{score}</span>
+
+              <div className='center-info'>
+                <span className="info-tooltip-icon">?
+                   {generateSmartTooltip(explain)}
+                </span>
+              </div>
+
           </div>
         </div>
       )}
 
       {scoreTree.length > 0 && predictionTree !== '' && (
         <div className='cont-individual-result'>
-        <h3 className='title-diagnostic'>Modelo de Machine Learning</h3>
+        <h3 className='title-diagnostic'>Modelo de Machine Learning
+
+          <span className="info-tooltip-icon">?
+              <span className="info-tooltip-text">
+                  Este modelo analiza la información financiera 
+                  (como liquidez, deudas, ventas e inventarios) y la compara 
+                  con patrones de otros negocios. 
+                  Con eso predice si tu negocio está en riesgo o estable.
+              </span>
+          </span>
+
+        </h3>
           <div className='data-diagnostic'>
             <p>
               Predicción: {" "} 
@@ -412,6 +449,30 @@ const handleSubmit = async (e) => {
           
             <p>Puntaje estimado: </p>
             <span>{(Math.max(scoreTree[0],scoreTree[1]) * 100).toFixed(1)}%</span>
+          
+          <div className='center-info'>
+                <span className="info-tooltip-icon">?
+                    {predictionTree===0?(
+                      <span className="info-tooltip-text">
+                        
+                        El modelo considera que tu negocio <b>no se encuentra en una situación crítica</b>. 
+                        Sin embargo, revisa los indicadores financieros individuales para confirmar 
+                        la estabilidad.
+
+                      </span>
+                    ):(
+                      <span className="info-tooltip-text">
+                        
+                        El modelo estima que tu negocio <b>tiene factores de riesgo financiero</b>. 
+                        Esto se debe a combinaciones de indicadores (ej. alto endeudamiento, baja liquidez o baja rentabilidad). 
+                        Revisa las métricas específicas para entender las causas.
+
+                      </span>
+                    )}
+                </span>
+              </div>
+          
+          
           </div>
         </div>
       )}
@@ -419,7 +480,16 @@ const handleSubmit = async (e) => {
 
       {scoreTree.length > 0 && predictionTree !== '' && score && (
         <div className='cont-individual-result'>
-        <h3 className='title-diagnostic'>Semáforo</h3>
+          <h3 className='title-diagnostic'>Semáforo
+            <span className="info-tooltip-icon">?
+              <span className="info-tooltip-text">
+                El semáforo toma el promedio de los resultados de ambos modelos.<br></br>
+                🟢 Ambos resultados son positivos<br></br>
+                🟡 Uno de los resultados es negativo<br></br>
+                🔴 Ambos resultados son negativos 
+              </span>
+            </span>
+          </h3>
           <div  className={`semaforo-color ${getSemaforoClass(score, predictionTree)}`}>
           </div>
         </div>

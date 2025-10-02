@@ -136,7 +136,7 @@
   text-align: center;
 }
 
-
+ 
 .tooltip-icon {
   display: inline-block;
   margin-left: 5px;
@@ -169,4 +169,48 @@
 
 .tooltip-icon:hover .tooltip-text {
   visibility: visible;
+}
+
+
+.info-tooltip-icon {
+  display: inline-block;
+  margin-left: 5px;
+  background: #727272;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.info-tooltip-text {
+  visibility: hidden;
+  width: 280px;
+  background: #333;
+  color: #fff;
+  text-align: left;
+  padding: 8px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 15px;
+}
+
+.info-tooltip-icon:hover .info-tooltip-text {
+  visibility: visible;
+}
+
+.center-info {
+  grid-column: 1 / span 2; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 5px 0;
 }
