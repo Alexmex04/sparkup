@@ -6,84 +6,25 @@
   margin-bottom: 20px;   
 }
 
-.metric-block {
-  margin-bottom: 16px;     
+.select-analysis1{
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  background-color: #3a74ff;
+
 }
 
-.metric-name {
-  font-weight: 600;
-  margin-top: 10px;
-  margin-bottom: 20px;       
+.div-analysis{
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.metric-values {
-  display: grid;
-  grid-template-columns: 1fr 1fr; 
-  border: 1px solid #333; 
-  border-radius: 8px;   
-}
-
-.valor-obtenido, .rango-optimo {     
-  background-color: #111;      
-  padding: 8px 15px;
-}
-.valor-obtenido {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-.rango-optimo{
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
-
-.detailed-analysis {
-  margin-top: 20px;
-}
-
-.detailed-metric {
-  background-color: #111;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 12px 20px;
-  margin-bottom: 18px;
-}
-
-.detailed-metric strong {
-  display: block;
-  font-weight: 600;
-  color: #e0e0e0;
-  margin-bottom: 4px;
-}
-
-.detailed-metric span {
-  color: #ccc;
-  line-height: 1.5;
-}
-
-
-
-.explanation-section {
-  margin-top: 20px;
-}
-
-.explanation-block {
-  background-color: #111;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-}
-
-.explanation-block strong {
-  display: block;
-  font-weight: 600;
-  color: #e0e0e0;
-  margin-bottom: 6px;
-}
-
-.explanation-block p {
-  color: #ccc;
-  line-height: 1.5;
-  margin: 4px 0;
+.text-analysis{
+  text-align: center;
+  margin-bottom: 20px;
 }

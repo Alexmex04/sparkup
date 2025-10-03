@@ -1,53 +1,142 @@
+import { useState } from 'react';
 import "./Analysis.css";
+import FinancialIndicatorsChart from './FinancialIndicatorsChart';
+import { transformFinancialData } from "./transformFinancialData";
 
 const Analysis = ({ explain }) => {
-  const metricNames = {
-    RazonDeLiquidez: "Razón de Liquidez",
-    CapitalDeTrabajo: "Capital de Trabajo",
-    RazonDeEndeudamiento: "Razón de Endeudamiento",
-    DeudaDePatrimonio: "Deuda de Patrimonio",
-    RotacionDeInventario: "Rotación de Inventario",
-    RotacionCuentasPorCobrar: "Rotación de Cuentas por Cobrar",
-    RotacionDeActivos: "Rotación de Activos",
-    MargenNeto: "Margen Neto",
-    RendimientoSobreActivos: "Rendimiento sobre Activos",
-    RendimientoSobrePatrimonio: "Rendimiento sobre Patrimonio"
+  const [chartType, setChartType] = useState('general');
+
+
+   const getChartData = () => {
+    if (!explain) return [];
+    
+    if (chartType === 'general') {
+      return transformFinancialData(explain);
+    } else {
+      // Filtrar datos por categoría específica
+      const categorias = {
+        'liquidez': ['RazonDeLiquidez', 'CapitalDeTrabajo'],
+        'endeudamiento': ['RazonDeEndeudamiento', 'DeudaDePatrimonio'],
+        'eficiencia': ['RotacionDeInventario', 'RotacionCuentasPorCobrar', 'RotacionDeActivos'],
+        'rentabilidad': ['MargenNeto', 'RendimientoSobreActivos', 'RendimientoSobrePatrimonio']
+      };
+
+      const metricas = categorias[chartType] || [];
+      return metricas
+        .map(metrica => explain[metrica])
+        .filter(Boolean)
+        .map(metric => ({
+          name: metric.metric,
+          value: metric.score,
+          result: metric.value
+        }));
+        
+    }
   };
 
-  const scores = {
-    RazonDeLiquidez: "Mayor a 1.5 y menor que 5",
-    CapitalDeTrabajo: "Mayor que 0",
-    RazonDeEndeudamiento: "Mayor a 0 y menor que 0.5",
-    DeudaDePatrimonio: "Menor que 1",
-    RotacionDeInventario: "Mayor que 4",
-    RotacionCuentasPorCobrar: "Mayor que 5",
-    RotacionDeActivos: "Mayor que 1.5",
-    MargenNeto: "Mayor que 0.1",
-    RendimientoSobreActivos: "Mayor que 0.1",
-    RendimientoSobrePatrimonio: "Mayor que 0.2"
+    const getChartTitle = () => {
+    const titulos = {
+      'general': 'Análisis General Financiero',
+      'liquidez': 'Análisis de Liquidez',
+      'endeudamiento': 'Análisis de Endeudamiento', 
+      'eficiencia': 'Análisis de Eficiencia Operativa',
+      'rentabilidad': 'Análisis de Rentabilidad'
+    };
+    return titulos[chartType] || 'Análisis Financiero';
   };
 
   if (!explain) return <div>No hay datos disponibles</div>;
 
   return (
     <>
-    {/**<div>
-      <h3 className='title-diagnostic'>Puntajes óptimos</h3>
-      {Object.values(explain).map((item, index) => (
-        <div key={index} className="metric-block">
-          <div className="metric-name">
-            <strong>{metricNames[item.metric] || item.metric}:</strong> 
-          </div>
-          <div className="metric-values">
-            <div className="valor-obtenido">Valor Obtenido: {typeof item.value === 'number' ? item.value.toFixed(2) : item.value}</div>
-            <div className="rango-optimo">Rango Óptimo: {scores[item.metric] || 'N/A'}</div>
-          </div>
+<select 
+          id="chart-select"
+          value={chartType} 
+          onChange={(e) => setChartType(e.target.value)}
+        
+          className='select-analysis1'
+        >
+          <option value="general">General</option>
+          <option value="liquidez">Liquidez</option>
+          <option value="endeudamiento">Endeudamiento</option>
+          <option value="eficiencia">Eficiencia Operativa</option>
+          <option value="rentabilidad">Rentabilidad</option>
+        </select>
+       
+         
 
- 
-        </div>
-      ))}
-    </div> */}
-    
+         <div className='div-analysis'>
+          <h3 className='text-analysis'>
+          {getChartTitle()}
+        </h3>
+
+
+          {chartType==='general' && (
+            <div className='center-info'>
+              <span className="info-tooltip-icon">?
+                  <span className="info-tooltip-text">
+                  Este gráfico muestra el resultado global de tu negocio en 
+                  cuatro áreas clave: <b>liquidez</b>, <b>endeudamiento</b>, <b>eficiencia</b> y <b>rentabilidad</b>.
+                  Cada barra representa el puntaje promedio de sus indicadores.
+                  </span>
+                </span>
+            </div>
+          )}
+                    
+          {chartType === 'liquidez' && (
+            <div>
+              <span className="info-tooltip-icon">?
+                <span className="info-tooltip-text">
+                  
+                  La <b>liquidez</b> refleja tu capacidad para cubrir deudas a corto plazo. 
+                  Incluye la Razón de Liquidez y el Capital de Trabajo.
+                </span>
+              </span>
+            </div>
+          )}
+
+          {chartType === 'endeudamiento' && (
+            <div>
+              <span className="info-tooltip-icon">?
+                <span className="info-tooltip-text">
+                  
+                  El <b>endeudamiento</b> mide cuánto depende tu negocio de financiamiento externo. 
+                  Incluye la Razón de Endeudamiento y la Deuda sobre Patrimonio.
+                </span>
+              </span>
+            </div>
+          )}
+
+          {chartType === 'eficiencia' && (
+            <div>
+              <span className="info-tooltip-icon">?
+                <span className="info-tooltip-text">
+                  
+                  La <b>eficiencia</b> muestra qué tan bien usas tus recursos. 
+                  Considera la rotación de inventario, cuentas por cobrar y activos.
+                </span>
+              </span>
+            </div>
+          )}
+
+          {chartType === 'rentabilidad' && (
+            <div>
+              <span className="info-tooltip-icon">?
+                <span className="info-tooltip-text">
+                  
+                  La <b>rentabilidad</b> indica qué tan rentable es tu negocio. 
+                  Incluye el Margen Neto, Rendimiento sobre Activos y Rendimiento sobre Patrimonio.
+                </span>
+              </span>
+            </div>
+          )}
+
+
+        <FinancialIndicatorsChart 
+          data={getChartData()} 
+          title={getChartTitle()}
+        />
+      </div>
 
 
 
