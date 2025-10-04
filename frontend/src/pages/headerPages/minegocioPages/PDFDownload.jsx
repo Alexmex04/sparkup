@@ -35,7 +35,7 @@ const idealValues = {
     doc.setFontSize(12);
     doc.text("Sistema experto", 60, 120);
     doc.text(`Resultado: ${getDiagnostico(score)}`, 50, 160, { maxWidth: 140 });
-    doc.text(`Puntaje: ${score}`, 50, 190);
+    doc.text(`Puntaje: ${score}`, 50, 195);
 
     doc.setFillColor(240, 240, 240);
     doc.roundedRect(220, 100, 160, 120, 8, 8, "F"); 
@@ -48,7 +48,7 @@ const idealValues = {
     const mlPred = predictionTree === 0 ? "Fuera de riesgo" : "En riesgo";
     
     doc.text(`Predicción: ${mlPred}`, 230, 160, { maxWidth: 140 });
-    doc.text(`Puntaje estimado: ${puntajeEstimado}%`, 230, 180);
+    doc.text(`Puntaje estimado: ${puntajeEstimado}%`, 230, 195);
 
     doc.setFillColor(240, 240, 240);
     doc.roundedRect(400, 100, 160, 120, 8, 8, "F"); 
