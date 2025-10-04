@@ -132,10 +132,9 @@ const Analysis = ({ explain }) => {
           )}
 
 
-        <FinancialIndicatorsChart 
-          data={getChartData()} 
-          title={getChartTitle()}
-        />
+                  <div className={`div-analysis-chart ${chartType}`}>
+            <FinancialIndicatorsChart data={getChartData()} title={getChartTitle()} />
+          </div>
       </div>
 
 
