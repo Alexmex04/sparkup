@@ -6,6 +6,20 @@ import { transformFinancialData } from "./transformFinancialData";
 const Analysis = ({ explain }) => {
   const [chartType, setChartType] = useState('general');
 
+   //Explicaciones detalladas de cada indicador
+  const indicatorExplanations = {
+    "RazonDeLiquidez": "Mide la capacidad para cubrir deudas a corto plazo. Ideal entre 1.5 y 5.",
+    "CapitalDeTrabajo": "Representa los recursos disponibles tras pagar deudas inmediatas. Ideal mayor a 0.",
+    "RazonDeEndeudamiento": "Indica qué porcentaje de tus activos está financiado con deuda. Ideal menor a 50%.",
+    "DeudaDePatrimonio": "Compara la deuda total con el capital propio. Ideal menor a 1.",
+    "RotacionDeInventario": "Cuántas veces se renueva el inventario en un periodo. Ideal mayor a 4.",
+    "RotacionCuentasPorCobrar": "Velocidad promedio con la que cobras tus cuentas por cobrar. Ideal mayor a 5.",
+    "RotacionDeActivos": "Mide la eficiencia en el uso de tus activos para generar ventas. Ideal mayor a 1.5.",
+    "MargenNeto": "Porcentaje de ganancia después de todos los gastos. Ideal mayor a 10%.",
+    "RendimientoSobreActivos": "Rentabilidad generada por los activos de la empresa. Ideal mayor a 10%.",
+    "RendimientoSobrePatrimonio": "Beneficio que obtienen los dueños respecto a su inversión. Ideal mayor a 20%."
+  };
+
 
    const getChartData = () => {
     if (!explain) return [];
@@ -20,7 +34,7 @@ const Analysis = ({ explain }) => {
         'eficiencia': ['RotacionDeInventario', 'RotacionCuentasPorCobrar', 'RotacionDeActivos'],
         'rentabilidad': ['MargenNeto', 'RendimientoSobreActivos', 'RendimientoSobrePatrimonio']
       };
-
+ 
       const metricas = categorias[chartType] || [];
       return metricas
         .map(metrica => explain[metrica])
@@ -28,7 +42,8 @@ const Analysis = ({ explain }) => {
         .map(metric => ({
           name: metric.metric,
           value: metric.score,
-          result: metric.value
+          result: metric.value,
+        interpretation: indicatorExplanations[metric.metric]  || "" // ✅ Nueva
         }));
         
     }
@@ -132,9 +147,25 @@ const Analysis = ({ explain }) => {
           )}
 
 
-                  <div className={`div-analysis-chart ${chartType}`}>
-            <FinancialIndicatorsChart data={getChartData()} title={getChartTitle()} />
-          </div>
+<div className="div-analysis-chart">
+  <div className="left-tooltip">
+    <span className="info-tooltip-icon">?
+      <span className="info-tooltip-text">
+           
+           <b>Puntaje financiero</b><br/>
+            🔴 Menor a 30 = Crítico  <br/> 
+            🟡 Mayor a 30 y menor que 70 = Regular<br/>
+            🟢 Mayor a 70 = Saludable
+      </span>
+    </span>
+  </div>
+  
+   
+   
+    <FinancialIndicatorsChart data={getChartData()} title={getChartTitle()} />
+  
+</div>
+
       </div>
 
 

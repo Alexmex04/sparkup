@@ -189,6 +189,7 @@
 .info-tooltip-text {
   visibility: hidden;
   width: 280px;
+  max-width: 340px;
   background: #333;
   color: #fff;
   text-align: left;

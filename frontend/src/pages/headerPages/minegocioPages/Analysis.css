@@ -28,3 +28,21 @@
   text-align: center;
   margin-bottom: 20px;
 }
+
+
+.div-analysis-chart {
+  width: 100%;
+  max-width: 100%;
+  position: relative;  
+  justify-content: center;
+  align-items: center;
+}
+ 
+.left-tooltip {
+  width:  20px;
+  position: absolute;
+  left: -40px;  
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 10;
+}

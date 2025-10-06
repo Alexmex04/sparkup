@@ -20,6 +20,7 @@ const explanations = {
   "RendimientoSobrePatrimonio": "Rentabilidad para los dueños (ideal > 20%)."
 };
 
+// --- Tooltip en eje X ---
 const CustomTick = ({ x, y, payload }) => {
   return (
     <g transform={`translate(${x},${y})`}>
@@ -29,7 +30,7 @@ const CustomTick = ({ x, y, payload }) => {
         y={0}
         dy={16}
         textAnchor="middle"
-        fill="#8fb0ffff"
+        fill="#235fecff"
         style={{ cursor: "help" }}
       >
         {formatLabel(payload.value)}
@@ -37,6 +38,27 @@ const CustomTick = ({ x, y, payload }) => {
     </g>
   );
 };
+
+
+// --- Tooltip en eje Y (explicación del significado del puntaje) ---
+const CustomYAxisTick = ({ x, y, payload }) => (
+  <g transform={`translate(${x},${y})`}>
+    <title>          {`Puntaje financiero
+      🔴 Menor a 30 = Crítico  
+      🟡 Mayor a 30 y menor que 70 = Regular
+      🟢 Mayor a 70 = Saludable`}</title>
+    <text
+      x={0}
+      y={0}
+      dy={4}
+      textAnchor="end"
+      fill="#ffffff"
+      style={{ cursor: "help", fontSize: "11px" }}
+    >
+      {payload.value}
+    </text>
+  </g>
+);
 
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -61,6 +83,13 @@ const CustomTooltip = ({ active, payload, label }) => {
                 Resultado: <strong>{item.result.toFixed(2)}</strong>
             </p>
             )}
+
+             {/* Interpretación del resultado */}
+        {item.interpretation && (
+          <div className='p-cutomtooltip-r'>
+            <strong>Interpretación:</strong> {item.interpretation}
+          </div>
+        )}
   
 
       </div>
@@ -72,7 +101,36 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 
 
-
+// --- Tooltip en la leyenda ---
+const CustomLegend = () => {
+  return (
+    <div style={{
+      position: 'absolute',
+      right: '-120px',     // 🔹 Mueve a la derecha
+      top: '-150px',        // 🔹 Centra verticalmente
+      transform: 'translateY(-50%)',
+      display: 'flex',
+      flexDirection: 'column',  // 🔹 Apila los colores verticalmente
+      gap: '10px',
+      background: 'rgba(0,0,0,0.3)',
+      padding: '10px',
+      borderRadius: '8px'
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <div style={{ width: '15px', height: '15px', backgroundColor: '#ef4444', borderRadius: '2px' }}></div>
+        <span style={{ fontSize: '12px', color: "#fff" }}>Crítico</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <div style={{ width: '15px', height: '15px', backgroundColor: '#f59e0b', borderRadius: '2px' }}></div>
+        <span style={{ fontSize: '12px', color: "#fff" }}>Regular</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <div style={{ width: '15px', height: '15px', backgroundColor: '#22c55e', borderRadius: '2px' }}></div>
+        <span style={{ fontSize: '12px', color: "#fff" }}>Saludable</span>
+      </div>
+    </div>
+  );
+};
 
 
 
@@ -87,15 +145,39 @@ const FinancialIndicatorsChart = ({ data, title }) => {
 
   return (
     <div>
-      
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+      <div style={{ position: 'relative'}}>
+
+      <ResponsiveContainer width="100%" height={350}>
+        <BarChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 50 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" tick={<CustomTick />} />
-          <YAxis />
+          <XAxis 
+              dataKey="name" 
+              tick={<CustomTick />} 
+            />
+            <text
+              x={360} 
+              y={330}  
+              textAnchor="start"
+              fill="#235fecff"
+              fontWeight="bold"
+              fontSize="14px"
+            >
+              Indicadores
+            </text>
+          <YAxis 
+            tick={<CustomYAxisTick />}
+            label={{ 
+              value: 'Puntaje', 
+              angle: -90, 
+              position: 'insideLeft',
+              fontWeight: 700, 
+              offset: -10,
+              style: { textAnchor: 'middle', fill: '#235fecff' }
+            }} 
+          />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Bar dataKey="value" name="Indicadores" fill="#8fb0ffff">
+          <Legend content={<CustomLegend />} />
+          <Bar dataKey="value" name="Indicadores" fill="#235fecff">
             {data.map((entry, index) => (
               <Cell 
                 key={`cell-${index}`} 
@@ -105,6 +187,9 @@ const FinancialIndicatorsChart = ({ data, title }) => {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+
+      </div>
+
     </div>
   );
 };
