@@ -24,7 +24,7 @@
   background: #6eff8b;  
 }
 .form-diagnostic{
-  border: 1px solid #333;
+  border: 1px solid #5778a3;
   background-color: #102a44;
   padding: 25px;
   border-radius: 15px;
@@ -65,10 +65,10 @@
   padding: 10px 12px;
   border-radius: 8px;
   border: 1px solid #333;
-  background-color: #111;
   color: #fff;
   font-size: 1rem;
   transition: all 0.3s ease;
+  background-color: #0c1626 !important;
 }
 
 .title-diagnostic{
@@ -87,12 +87,11 @@
 }
 
 .cont-individual-result{
-  border: 2px solid white;;
+  border: 2px solid #5778a3;
   border-radius: 15px;
   width: 350px;
   max-width: 400px;
-  background-color: #102a44;
-  border: 1px solid #262a33;
+  background-color: #102a44; 
 }
 
 .data-diagnostic{

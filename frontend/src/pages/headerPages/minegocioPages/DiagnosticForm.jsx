@@ -154,8 +154,9 @@ const handleSubmit = async (e) => {
 
   return (
     <div className='main-cont'>
-      <h2 className='semaforo'>Semáforo financiero</h2>
+     
       <form onSubmit={handleSubmit} className='form-diagnostic'>
+         <h2 className='semaforo'>Semáforo financiero</h2>
         <h3 className='title-diagnostic'>Formulario de evaluación
 
                     <span className="info-tooltip-icon">?

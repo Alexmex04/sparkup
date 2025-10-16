@@ -39,11 +39,12 @@
 .search-tags-wrapper {
   padding: 10px;
   border-bottom: 1px solid var(--navy-border) !important;
+ 
 }
 
 .search-tags-bar {
   width: 100%;
-  background: #122b46 !important;
+  background-color: #0c1626 !important;
   border: 1px solid var(--navy-border-strong) !important;
   color: #ffffff !important;
   border-radius: 20px;

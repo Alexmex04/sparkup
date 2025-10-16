@@ -60,7 +60,7 @@
 /* ---------- HERO para visitantes (no logueados) ---------- */
 .guest-hero {
   background: linear-gradient(180deg, #0e2238, #102a44);
-  border: 1px solid #2b4160;
+   border: 1px solid #5778a3;
   border-radius: 16px;
   padding: clamp(16px, 3vw, 28px);
   margin-bottom: 24px;
