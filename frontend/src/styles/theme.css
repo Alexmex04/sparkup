@@ -1,7 +1,7 @@
 :root {
   /* Base dark */
   --bg: #0b0d10;
-  --surface: #121418;
+  --surface: #102a44;
   --surface-2: #171a1f;
   --text: #eaecef;
   --text-muted: #a6adbb;
@@ -45,7 +45,7 @@
 .container--elevate:hover { box-shadow: var(--shadow-soft); border-color: var(--border-strong) !important; }
 .container--focus:focus-within { box-shadow: var(--ring); }
 
-/* 1) Tarjetas/base de contenedores que ya tienes */
+/* 1) Tarjetas/base de contenedores */
 .text-container,
 .tags-main-container,
 .videos-main-container,
@@ -80,7 +80,7 @@
   background-blend-mode: overlay;
 }
 
-/* 3) Hover de tarjeta (profesional y discreto) */
+/* 3) Hover de tarjeta */
 .video-card:hover,
 .roadmap-item:hover,
 .reco-card:hover {
@@ -95,7 +95,7 @@
   box-shadow: var(--ring);
 }
 
-/* 5) Divisores internos más finos (por si usas hr o líneas) */
+/* 5) Divisores internos más finos*/
 .text-container hr,
 .form-diagnostic hr,
 .explanation-block hr,
@@ -165,7 +165,7 @@
   box-shadow: var(--shadow-soft);
 }
 
-/* 9) Estados de “seleccionado” o “activo” si ya los usas */
+/* 9) Estados de “seleccionado” o “activo” */
 .is-liked,
 .is-active,
 .liked {
