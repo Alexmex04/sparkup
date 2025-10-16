@@ -54,7 +54,7 @@
   border-radius: 12px !important;
   transition: background .15s, border-color .15s, box-shadow .2s;
 }
-.roadmap-item:hover { background: var(--surface-2) !important; border-color: var(--border-strong) !important; box-shadow: var(--shadow-soft); }
+.roadmap-item:hover { background: #091220  !important; border-color: var(--border-strong) !important; box-shadow: var(--shadow-soft); }
 
 .roadmap-pill {
   background: var(--primary) !important;
