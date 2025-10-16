@@ -99,13 +99,12 @@
 /* --- Estilos compatibles con el tema del Modificado --- */
 .theme-dark {
    /*background: linear-gradient(180deg, #0e0e0e 0%, #1a1a1a 100%);*/
-   min-height: 100vh;
-  margin: 0;
-background: #111e2c;
-background: linear-gradient(0deg, #111e2c, #27344e, #506d8f);
   min-height: 100vh;
+background: #819695;
+background: linear-gradient(180deg,rgba(129, 150, 149, 1) 0%, rgba(58, 70, 74, 1) 37%, rgba(19, 23, 26, 1) 100%);
   display: grid;
-  place-items: center;
+  align-items: start;
+ 
   color: #eee;
 }
 

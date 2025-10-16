@@ -2,8 +2,11 @@
 :root { color-scheme: dark; }
 html, body { 
   /*  background: var(--bg) !important; */
-background: #111e2c;
-background: linear-gradient(0deg, #111e2c, #27344e, #506d8f);
+background: #819695;
+background: linear-gradient(180deg,rgba(129, 150, 149, 1) 0%, rgba(58, 70, 74, 1) 37%, rgba(19, 23, 26, 1) 100%);
+  
+
+
   color: var(--text) !important; }
 
 /* Links y texto */
