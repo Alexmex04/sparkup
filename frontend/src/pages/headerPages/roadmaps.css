@@ -33,7 +33,7 @@
 
 .roadmap-tags-container { margin-top: 12px; display:flex; flex-wrap:wrap; gap: 8px; }
 .roadmap-tag {
-  background: #1a1a1a;
+  background: #0c1729;
   border: 1px solid #333;
   color: #eaeaea;
   padding: 6px 10px;

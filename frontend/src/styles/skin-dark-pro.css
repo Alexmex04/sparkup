@@ -2,8 +2,8 @@
 :root { color-scheme: dark; }
 html, body { 
   /*  background: var(--bg) !important; */
-background: #0d1b2a;
-background: linear-gradient(0deg, #0d1b2a, #1b263b, #415a77);
+background: #111e2c;
+background: linear-gradient(0deg, #111e2c, #27344e, #506d8f);
   color: var(--text) !important; }
 
 /* Links y texto */
