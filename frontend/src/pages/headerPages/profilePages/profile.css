@@ -9,8 +9,9 @@
   background-color: #102a44;
   padding: 25px;
   border-radius: 15px;
-  width: 800px;
+  width: 500px;
   justify-self: center;
+  margin: 20px;
 }
 .boton-perfil{
     color: rgb(0, 71, 24);
