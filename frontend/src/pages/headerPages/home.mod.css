@@ -315,7 +315,7 @@
 }
 .roadmap-tag-btn {
   color: var(--text, #eaeaea);
-  background: var(--surface-2, #102a44);
+  background: var(#142b52, #102a44);
   border: 1px solid #345679;
   border-radius: 10px;
   padding: 6px 10px;

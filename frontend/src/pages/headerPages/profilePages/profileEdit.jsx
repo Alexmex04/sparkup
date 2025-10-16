@@ -75,7 +75,7 @@ setErrors("error de edicion");
                   <h2>{email}</h2>
                   <form onSubmit={EditProfile}>
 
-                        <div className='form-field'>
+                        <div className='form-field form-field-pro'>
                             <label className='form-label'>Nombre</label>
                             <div className='control'>
                                 <input
@@ -89,7 +89,7 @@ setErrors("error de edicion");
                             </div>
                         </div>
 
-                        <div className='form-field'>
+                        <div className='form-field form-field-pro'>
                             <label className='form-label'>Apellidos</label>
                             <div className='control'>
                                 <input
@@ -106,7 +106,7 @@ setErrors("error de edicion");
 
                    
 
-                        <div className='form-field'>
+                        <div className='form-field form-field-pro'>
                             <label className='form-label'>Contraseña</label>
                             <div className='control'>
                                 <input
@@ -122,7 +122,7 @@ setErrors("error de edicion");
                         </div>
 
 
-                        <div className='form-field'>
+                        <div className='form-field form-field-pro'>
                             <button 
                                 type="submit" 
                                 className="boton-perfil"
