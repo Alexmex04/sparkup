@@ -63,7 +63,7 @@ a:hover { color: var(--primary-600); }
   border-radius: 12px !important;
   transition: background .15s, border-color .15s;
 }
-.tag-item:hover { background: var(--surface-2) !important; border-color: var(--border-strong) !important; }
+.tag-item:hover { background: #0c1626 !important; border-color: var(--border-strong) !important; }
 
 .tag-button {
   color: var(--text) !important;
