@@ -403,7 +403,7 @@ const handleSubmit = async (e) => {
 
       {!loading && score && (
         <div>
-        <h2 className='title-diagnostic'>Diagnóstico financiero</h2>
+        <h2 className='title-diagnostic title-shadow'>Diagnóstico financiero</h2>
         </div>
       )}
 
@@ -534,7 +534,7 @@ const handleSubmit = async (e) => {
 
     {!loading && explain && (
       <div className='analysis-main-content'>
-      <h2 className='title-diagnostic'>Análisis</h2>
+      <h2 className='title-diagnostic title-shadow'>Análisis</h2>
       <Analysis explain={explain} />
           <button 
             type="button" 

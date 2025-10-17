@@ -77,7 +77,9 @@
   justify-self: center;
   color: white;
 }
-
+.title-shadow{
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
 .cont-results{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;  
@@ -189,7 +191,7 @@
   visibility: hidden;
   width: 280px;
   max-width: 340px;
-  background: #333;
+  background: #2c2c34;
   color: #fff;
   text-align: left;
   padding: 8px;

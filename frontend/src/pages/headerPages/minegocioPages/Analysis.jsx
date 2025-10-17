@@ -81,7 +81,7 @@ const Analysis = ({ explain }) => {
          
 
          <div className='div-analysis'>
-          <h3 className='text-analysis'>
+          <h3 className='text-analysis title-shadow'>
           {getChartTitle()}
         </h3>
 

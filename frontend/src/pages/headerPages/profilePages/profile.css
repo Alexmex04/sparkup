@@ -75,6 +75,7 @@ nav.profile-tabs .nav-link {
   padding: 8px 14px;              /* no cambia el layout externo */
   margin-inline: 12px;            /* ←→ espacio entre tabs */
   border-radius: 10px;            /* opcional: pill suave */
+  
 }
 
 /* Un poco más de separación en pantallas medianas/grandes */
@@ -83,4 +84,11 @@ nav.profile-tabs .nav-link {
 }
 @media (min-width: 1200px) {
   nav.profile-tabs .nav-link { margin-inline: 18px; }
+}
+.title-shadow{
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+.pro-link{
+    border: 1px solid #6b88ad;
+  background-color: #1a2a39;
 }
