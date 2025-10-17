@@ -349,8 +349,8 @@ function Home() {
           <span className="text-yellow">PyME</span> te ayuda a tomar decisiones{" "}
           <span className="text-red">hoy</span>
         </h2>
-        <p>Convierte tus números en acciones concretas</p>
-        <p>Detecta riesgos antes de que afecten tu caja</p>
+        <p className="title-shadow">Convierte tus números en acciones concretas</p> 
+        <p className="title-shadow">Detecta riesgos antes de que afecten tu caja</p>
         <div className="cta-register-box">
           <p>
             REGÍSTRATE O SI YA TIENES CUENTA INICIA SESIÓN Y HAZ CLICK EN "MI

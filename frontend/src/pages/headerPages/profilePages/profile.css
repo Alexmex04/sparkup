@@ -86,7 +86,7 @@ nav.profile-tabs .nav-link {
   nav.profile-tabs .nav-link { margin-inline: 18px; }
 }
 .title-shadow{
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
 }
 .pro-link{
     border: 1px solid #6b88ad;
