@@ -1,10 +1,10 @@
 :root {
   /* Base dark */
-  --bg: #0b0d10;
+  
   --surface: #102a44;
   --surface-2: #171a1f;
-  --text: #eaecef;
-  --text-muted: #a6adbb;
+  --text: #f7faff;
+  --text-muted: #d0d1f5;
 
   /* Bordes */
   --border: #5e8bae;

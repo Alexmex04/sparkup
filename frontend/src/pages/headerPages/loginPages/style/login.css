@@ -100,8 +100,8 @@
 .theme-dark {
    /*background: linear-gradient(180deg, #0e0e0e 0%, #1a1a1a 100%);*/
   min-height: 100vh;
-background: #819695;
-background: linear-gradient(180deg,rgba(129, 150, 149, 1) 0%, rgba(58, 70, 74, 1) 37%, rgba(19, 23, 26, 1) 100%);
+
+  
   display: grid;
   align-items: start;
  

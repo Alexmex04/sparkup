@@ -1,14 +1,10 @@
 /* === BASE (sin mover layout) === */
 :root { color-scheme: dark; }
 html, body { 
-  /*  background: var(--bg) !important; */
-background: #819695;
-background: linear-gradient(180deg,rgba(129, 150, 149, 1) 0%, rgba(58, 70, 74, 1) 37%, rgba(19, 23, 26, 1) 100%);
   
-
+  background: linear-gradient(180deg, #0d131a 0%, #436172 50%, #0d131a 100%);
 
   color: var(--text) !important; }
-
 /* Links y texto */
 a { color: var(--primary); }
 a:hover { color: var(--primary-600); }
